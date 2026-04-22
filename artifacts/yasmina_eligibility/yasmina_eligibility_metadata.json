@@ -1,0 +1,275 @@
+{
+  "config": {
+    "random_state": 42,
+    "validation_size": 0.15,
+    "test_size": 0.15,
+    "cv_folds": 5,
+    "generate_plots": true
+  },
+  "data": {
+    "rows_total": 3130,
+    "rows_labeled": 2958,
+    "rows_dropped_missing_target": 172,
+    "target_positive_rate": 0.6284651791751183
+  },
+  "splits": {
+    "train_rows": 2070,
+    "validation_rows": 444,
+    "test_rows": 444,
+    "train_positive_rate": 0.6289855072463768,
+    "validation_positive_rate": 0.6283783783783784,
+    "test_positive_rate": 0.6283783783783784,
+    "explicitly_excluded_leakage_columns": [
+      "decision",
+      "bin_status",
+      "need_pct",
+      "need_comment",
+      "merit_pct",
+      "merit_hist_pct",
+      "merit_comment",
+      "over_and_above_decision",
+      "over_and_above_percentage_awarded",
+      "has_over_and_above"
+    ]
+  },
+  "normal_workflow": {
+    "selected_candidate": "HistGradientBoosting",
+    "selected_model_family": "tree",
+    "selected_threshold_policy": "best_f1",
+    "feature_engineering": {
+      "created_columns": [],
+      "created_column_count": 15
+    },
+    "feature_pruning": {
+      "high_missingness_columns": [
+        "mother_annual_income_from_work_status",
+        "applicant_position",
+        "spouse_citizenship"
+      ],
+      "near_constant_columns": [
+        "application_type_inconsistent_flag"
+      ],
+      "high_cardinality_columns": [
+        "father_self_employed_name",
+        "special_family_circumstances_detail",
+        "car_models"
+      ],
+      "columns_dropped_total": 7
+    },
+    "retained_feature_count": 96,
+    "numeric_column_count": 57,
+    "categorical_column_count": 39,
+    "class_weight": null,
+    "scale_pos_weight": 1.0,
+    "selection_summary": {
+      "strategy": "Shortlist by CV ROC AUC, then validation ROC AUC, then prefer lower overfit gap and better calibration quality when differences are effectively tied.",
+      "candidate_pool_size": 8,
+      "best_cv_roc_auc": 0.8626285743155251,
+      "cv_roc_auc_tolerance": 0.005,
+      "validation_roc_auc_tolerance": 0.003,
+      "cv_shortlist_models": [
+        "HistGradientBoosting",
+        "HistGradientBoosting (tuned)",
+        "XGBoost",
+        "XGBoost (tuned)"
+      ],
+      "validation_shortlist_models": [
+        "HistGradientBoosting",
+        "HistGradientBoosting (tuned)"
+      ],
+      "selected_model": "HistGradientBoosting",
+      "selected_model_family": "tree",
+      "selected_model_validation_roc_auc": 0.8182687085912893,
+      "selected_model_cv_roc_auc": 0.8617462546468632,
+      "selected_model_overfit_gap_roc_auc": 0.08801166115359449,
+      "selected_model_validation_brier_score": 0.16054213261623893,
+      "selected_model_cv_roc_auc_std": 0.019100288186329938,
+      "selection_reason": "Chosen from the near-top ROC AUC candidates because it provided the best stability/overfit trade-off on validation."
+    },
+    "calibration_summary": {
+      "enabled": true,
+      "selected_mode": "calibrated",
+      "uncalibrated": {
+        "roc_auc": 0.8182687085912893,
+        "average_precision": 0.8737450328328267,
+        "brier_score": 0.16054213261623893
+      },
+      "calibrated": {
+        "roc_auc": 0.8221353318127512,
+        "average_precision": 0.8733962937864483,
+        "brier_score": 0.1591167078719003
+      },
+      "status": "calibration_compared",
+      "selection_reason": "Calibration improved Brier score meaningfully without materially reducing validation ROC AUC or average precision.",
+      "brier_improvement": 0.001425424744338627,
+      "roc_auc_change": 0.003866623221461918,
+      "average_precision_change": -0.0003487390463783324
+    },
+    "validation_summary": {
+      "selected_policy": "best_f1",
+      "selected_threshold": 0.41,
+      "probability_metrics": {
+        "roc_auc": 0.8221353318127512,
+        "average_precision": 0.8733962937864483,
+        "brier_score": 0.1591167078719003
+      },
+      "selected_policy_metrics": {
+        "label": "best_f1",
+        "threshold": 0.41,
+        "accuracy": 0.7838,
+        "precision": 0.7731,
+        "recall": 0.9283,
+        "f1": 0.8436482084690554,
+        "confusion_matrix": [
+          [
+            89,
+            76
+          ],
+          [
+            20,
+            259
+          ]
+        ]
+      },
+      "threshold_results": {
+        "best_f1": {
+          "threshold": 0.41,
+          "accuracy": 0.7838,
+          "precision": 0.7731,
+          "recall": 0.9283,
+          "f1": 0.8436482084690554
+        },
+        "default_0.50": {
+          "threshold": 0.5,
+          "accuracy": 0.768,
+          "precision": 0.7785,
+          "recall": 0.8817,
+          "f1": 0.8269
+        },
+        "max_recall_with_precision_floor": {
+          "threshold": 0.11,
+          "accuracy": 0.723,
+          "precision": 0.694,
+          "recall": 1.0,
+          "f1": 0.8194
+        }
+      }
+    },
+    "test_summary": {
+      "selected_policy": "best_f1",
+      "selected_threshold": 0.41,
+      "probability_metrics": {
+        "roc_auc": 0.844118605408928,
+        "average_precision": 0.8764,
+        "brier_score": 0.1442764733125212
+      },
+      "selected_policy_metrics": {
+        "label": "best_f1",
+        "threshold": 0.41,
+        "accuracy": 0.7928,
+        "precision": 0.7679083094555874,
+        "recall": 0.9605734767025089,
+        "f1": 0.8535031847133758,
+        "confusion_matrix": [
+          [
+            84,
+            81
+          ],
+          [
+            11,
+            268
+          ]
+        ]
+      },
+      "threshold_results": {
+        "best_f1": {
+          "threshold": 0.41,
+          "accuracy": 0.7928,
+          "precision": 0.7679083094555874,
+          "recall": 0.9605734767025089,
+          "f1": 0.8535031847133758
+        },
+        "default_0.50": {
+          "threshold": 0.5,
+          "accuracy": 0.7883,
+          "precision": 0.7829,
+          "recall": 0.9176,
+          "f1": 0.8449
+        },
+        "max_recall_with_precision_floor": {
+          "threshold": 0.11,
+          "accuracy": 0.7185,
+          "precision": 0.6915,
+          "recall": 0.9964,
+          "f1": 0.8164
+        }
+      }
+    },
+    "feature_insights": {
+      "top_permutation_features": [
+        {
+          "feature": "father_income_document",
+          "importance_mean": 0.149165
+        },
+        {
+          "feature": "mother_income_document",
+          "importance_mean": 0.031256
+        },
+        {
+          "feature": "properties_count",
+          "importance_mean": 0.009484
+        },
+        {
+          "feature": "siblings_at_aub_count",
+          "importance_mean": 0.00847
+        },
+        {
+          "feature": "remaining_cap_50_rule_pct",
+          "importance_mean": 0.005685
+        }
+      ]
+    }
+  },
+  "leakage_stress_test": {
+    "run": true,
+    "note": "Stress test re-runs the trained workflow without suspicious features to show how much CV, validation, and final test performance depend on them.",
+    "excluded_suspicious_feature_count": 12,
+    "normal_selected_model": "HistGradientBoosting",
+    "stress_selected_model": "HistGradientBoosting",
+    "normal_test_roc_auc": 0.844118605408928,
+    "stress_test_roc_auc": 0.8375366568914957,
+    "test_roc_auc_drop": 0.006581948517432323,
+    "normal_test_selected_policy_f1": 0.8535031847133758,
+    "stress_test_selected_policy_f1": 0.84472049689441,
+    "test_selected_policy_f1_drop": 0.00878268781896585,
+    "selected_policy": "best_f1"
+  },
+  "optional_dependencies": {
+    "matplotlib": {
+      "requested": true,
+      "available": false,
+      "generated": false,
+      "message": "Pipeline run completed, but plot generation did not finish during artifact export."
+    }
+  },
+  "artifacts": {
+    "pipeline_path": "/Users/jamilshoujah/Desktop/YasminaNew/artifacts/yasmina_eligibility/yasmina_eligibility_pipeline.joblib",
+    "metadata_path": "/Users/jamilshoujah/Desktop/YasminaNew/artifacts/yasmina_eligibility/yasmina_eligibility_metadata.json",
+    "report_path": "/Users/jamilshoujah/Desktop/YasminaNew/artifacts/yasmina_eligibility/yasmina_eligibility_report.txt",
+    "roc_curve_path": null,
+    "pr_curve_path": null,
+    "plot_summary": {
+      "requested": true,
+      "available": false,
+      "generated": false,
+      "message": "Plot generation skipped while reconstructing metadata from the completed run output."
+    },
+    "calibration_applied": true,
+    "calibration_mode_selected": "calibrated",
+    "selected_model_family": "tree",
+    "selected_model_name": "HistGradientBoosting",
+    "selected_threshold_policy": "best_f1",
+    "selected_threshold": 0.41,
+    "selection_reason": "Chosen from the near-top ROC AUC candidates because it provided the best stability/overfit trade-off on validation."
+  }
+}

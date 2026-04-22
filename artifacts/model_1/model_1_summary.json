@@ -1,0 +1,37 @@
+{
+  "path": "artifacts/model_1/model_1_summary.json",
+  "train_share": 0.7,
+  "validation_share": 0.3,
+  "auc_by_model": {
+    "Logistic Regression": 0.6794,
+    "Random Forest": 0.8098,
+    "Gradient Boosting": 0.8188,
+    "KNN": 0.793
+  },
+  "best_model_name": "Gradient Boosting",
+  "best_model_auc": 0.8188,
+  "numeric_feature_count": 14,
+  "categorical_feature_count": 10,
+  "top_features": [
+    {
+      "feature": "Father Income Document",
+      "importance": 0.47245
+    },
+    {
+      "feature": "Mother Income Document",
+      "importance": 0.108765
+    },
+    {
+      "feature": "Number of Properties",
+      "importance": 0.073157
+    },
+    {
+      "feature": "Total Estimated Value",
+      "importance": 0.034103
+    },
+    {
+      "feature": "Number_of_Cars",
+      "importance": 0.023503
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+Metadata reconstructed from a completed training run after optional plot export failed.
+Selected model: HistGradientBoosting
+Test ROC AUC: 0.8441
+Test F1 (best_f1 policy): 0.8535
