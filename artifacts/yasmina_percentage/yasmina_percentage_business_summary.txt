@@ -1,0 +1,27 @@
+Executive Decision Logic
+========================
+
+When we auto-decide:
+- Auto-zero only when validated stage-1 P(any aid) <= 0.05, the upper prediction bound stays <= 10.0, confidence >= 0.50, and interval width <= 18.0.
+- Auto-award only when validated stage-1 P(any aid) >= 0.75, predicted aid is positive, confidence >= 0.50, and interval width <= 18.0.
+
+When we review:
+- Any case in a fairness manual-review subgroup goes to committee review.
+- Any low-confidence, high-uncertainty, or middle-probability case goes to review.
+- Moderately risky subgroups keep automation only under tighter thresholds (Moderately risky subgroups keep automation available, but only under stricter probability, confidence, and uncertainty thresholds.).
+
+Errors that matter most:
+- Harmful auto-zero: the model says no aid but the student actually received nonzero aid.
+- Harmful auto-award: an automated award misses by more than 10.0 percentage points.
+- Severe auto-award: an automated award misses by more than 20.0 points.
+
+Why these thresholds:
+- Error limits are tied to the historical 5.0-point award grid.
+- Fairness gaps trigger at MAE +2.50, bias 5.00, or rate-gap 0.14, using validation dispersion rather than arbitrary fixed cutoffs.
+- Probability thresholds were chosen by validation search; selected policy rank: 1.
+- Calibration check: A bin near 0.80 predicted probability averaged 0.75 predicted vs 0.76 observed nonzero aid.
+- Temporal holdout trained on [2025], tuned on [2026], and tested on [2027] with MAE 5.54 and R2 0.568.
+
+Current held-out result:
+- Auto-zero 37, auto-award 8, review 425.
+- Harmful auto-zero 0, harmful auto-award 1, severe auto-award 0.

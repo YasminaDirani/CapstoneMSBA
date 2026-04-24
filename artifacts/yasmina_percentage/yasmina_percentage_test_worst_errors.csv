@@ -1,0 +1,26 @@
+raw_source_sheet_name,raw_source_row_number,parsed_level,inferred_application_track,segment_school_group,segment_household_income_bucket,actual_need_pct,predicted_need_pct,predicted_nonzero_probability,prediction_interval_lower,prediction_interval_upper,confidence_score,signed_error,absolute_error
+Export,2828,Undergraduate,graduate_regular,[missing],missing_or_zero,100.0,50.0,0.8294755544883423,0.0,100.0,0.3624231099371766,-50.0,50.0
+Export,1987,Undergraduate,sophomore_regular,[other_schools],missing_or_zero,0.0,45.0,0.9532860919801258,24.644873818251327,63.41129736234808,0.51249243630705,45.0,45.0
+Export,94,Undergraduate,sophomore_regular,The International School of Choueifat - Choueifat,missing_or_zero,0.0,40.0,0.9435950725789846,17.1236154587049,60.377939973695334,0.48795457983688306,40.0,40.0
+Export,2014,Undergraduate,early_merit,[other_schools],missing_or_zero,0.0,40.0,0.9505838527802258,15.199932595702613,62.01127856795271,0.4956422380582485,40.0,40.0
+Export,594,Undergraduate,graduate_regular,[missing],missing_or_zero,100.0,60.0,0.9726338191076772,11.106430572185857,100.0,0.5198972010184449,-40.0,40.0
+Export,1468,Undergraduate,sophomore_regular,"International College (IC), Beirut",missing_or_zero,0.0,35.0,0.829985358909571,6.802426676336154,66.9988880652271,0.3629838948005282,35.0,35.0
+Export,264,Undergraduate,sophomore_regular,[other_schools],missing_or_zero,0.0,35.0,0.8068765045978585,3.580123529328155,64.81382568629115,0.3375641550576444,35.0,35.0
+Export,1188,Undergraduate,early_merit,[other_schools],missing_or_zero,50.0,20.0,0.7207278510830937,0.0,45.29831547633129,0.24280063619140307,-30.0,30.0
+Export,2871,Professional,professional_regular,[missing],missing_or_zero,0.0,30.0,0.8438730245488734,6.357547598231385,48.84935281457982,0.3782603270037607,30.0,30.0
+Export,2544,Undergraduate,sophomore_regular,[other_schools],low,40.0,10.0,0.25351599384612766,0.0,35.66623824904321,0.31988722646752343,-30.0,30.0
+Export,11,Undergraduate,early_merit,[other_schools],missing_or_zero,50.0,20.0,0.7215621170518652,0.0,42.47986610053523,0.2437183287570518,-30.0,30.0
+Export,1844,Undergraduate,graduate_regular,[missing],missing_or_zero,20.0,50.0,0.9134865622739806,0.0,100.0,0.4548352185013787,30.0,30.0
+Export,318,Undergraduate,sophomore_regular,[other_schools],very_high,40.0,10.0,0.37117366709707716,0.0,29.652099930606973,0.2581228419738867,-30.0,30.0
+Export,859,Undergraduate,sophomore_regular,[other_schools],low,0.0,30.0,0.8205323086599485,3.2551976748954203,60.95221833091234,0.3525855395259434,30.0,30.0
+Export,1075,Undergraduate,sophomore_regular,[other_schools],missing_or_zero,60.0,30.0,0.8038469944919036,0.0,57.98630682668359,0.3342316939410939,-30.0,30.0
+Export,1797,Undergraduate,early_merit,[other_schools],missing_or_zero,50.0,20.0,0.6328328562980375,0.0,49.619872959640645,0.1461161419278413,-30.0,30.0
+Export,78,Undergraduate,early_merit,[other_schools],missing_or_zero,50.0,20.0,0.7852481823222065,1.7058887690737699,42.997662586166044,0.3137730005544272,-30.0,30.0
+Export,1877,Undergraduate,early_merit,[other_schools],missing_or_zero,0.0,25.0,0.7655424817200872,0.0,54.38266592540309,0.29209672989209595,25.0,25.0
+Export,2819,Undergraduate,sophomore_regular,[other_schools],missing_or_zero,0.0,25.0,0.8043162160623987,0.0,47.14486451772926,0.3347478376686386,25.0,25.0
+Export,2395,Undergraduate,early_merit,[other_schools],missing_or_zero,50.0,25.0,0.7949265602553943,0.369123369895874,53.85045145226664,0.3244192162809338,-25.0,25.0
+Export,1149,Undergraduate,graduate_regular,[missing],mid,35.0,10.0,0.2654129856793564,0.0,33.22444038628266,0.33427076140702805,-25.0,25.0
+Export,499,Undergraduate,sophomore_regular,[other_schools],missing_or_zero,0.0,25.0,0.7147992916810353,0.0,53.644515442336754,0.23627922084913883,25.0,25.0
+Export,2323,Undergraduate,sophomore_regular,"Saint Mary's Orthodox College (SMOC), Beirut",missing_or_zero,50.0,25.0,0.7712108735852802,0.0,52.70830715211167,0.2983319609438082,-25.0,25.0
+Export,989,Undergraduate,early_merit,[other_schools],missing_or_zero,0.0,25.0,0.8431815180904357,2.975878557071372,50.8342164692084,0.37749966989947936,25.0,25.0
+Export,2002,Undergraduate,sophomore_regular,[other_schools],missing_or_zero,15.0,40.0,0.9361814624920533,16.214571473454065,62.178589391451915,0.4797996087412586,25.0,25.0

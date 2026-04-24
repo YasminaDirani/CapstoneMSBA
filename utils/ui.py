@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 from typing import Iterable, Sequence
 
 import altair as alt
@@ -328,6 +327,10 @@ def apply_design_system(*, max_width: int = 1460, extra_css: str = "") -> None:
             color: #9A6700;
             background: rgba(255, 251, 235, 0.96);
         }}
+        .ui-pill.audit {{
+            color: #B45309;
+            background: rgba(255, 247, 237, 0.96);
+        }}
         .ui-pill.danger {{
             color: #B42318;
             background: rgba(254, 242, 242, 0.96);
@@ -354,6 +357,9 @@ def apply_design_system(*, max_width: int = 1460, extra_css: str = "") -> None:
         .ui-kpi-card.warning {{
             border-top: 4px solid var(--accent);
         }}
+        .ui-kpi-card.audit {{
+            border-top: 4px solid #F97316;
+        }}
         .ui-kpi-card.danger {{
             border-top: 4px solid var(--danger);
         }}
@@ -379,6 +385,168 @@ def apply_design_system(*, max_width: int = 1460, extra_css: str = "") -> None:
             line-height: 1.45;
             margin: 0;
         }}
+        .ui-status-badge {{
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 0.22rem 0.58rem;
+            border: 1px solid var(--border);
+            font-size: 0.78rem;
+            font-weight: 760;
+            line-height: 1.1;
+            white-space: nowrap;
+        }}
+        .ui-status-badge.primary {{
+            color: var(--primary);
+            background: var(--success-tint);
+            border-color: rgba(31, 122, 108, 0.24);
+        }}
+        .ui-status-badge.warning {{
+            color: #9A6700;
+            background: var(--accent-tint);
+            border-color: rgba(245, 158, 11, 0.28);
+        }}
+        .ui-status-badge.audit {{
+            color: #B45309;
+            background: #FFF7ED;
+            border-color: rgba(249, 115, 22, 0.28);
+        }}
+        .ui-status-badge::before {{
+            content: "";
+            width: 0.42rem;
+            height: 0.42rem;
+            border-radius: 999px;
+            background: currentColor;
+            margin-right: 0.34rem;
+            opacity: 0.82;
+        }}
+        .ui-status-badge.danger {{
+            color: #B42318;
+            background: var(--danger-tint);
+            border-color: rgba(220, 38, 38, 0.24);
+        }}
+        .ui-status-badge.secondary {{
+            color: var(--muted);
+            background: var(--info-tint);
+            border-color: var(--border);
+        }}
+        .ui-takeaway {{
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
+            background: #ffffff;
+            padding: 0.85rem 0.95rem;
+            margin: 0.85rem 0 1rem 0;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        }}
+        .ui-takeaway.warning {{
+            border-left-color: var(--accent);
+        }}
+        .ui-takeaway.audit {{
+            border-left-color: #F97316;
+            background: linear-gradient(180deg, #ffffff 0%, #fffaf5 100%);
+        }}
+        .ui-takeaway.danger {{
+            border-left-color: var(--danger);
+        }}
+        .ui-takeaway.secondary {{
+            border-left-color: var(--muted);
+        }}
+        .ui-takeaway-label {{
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 0.22rem;
+        }}
+        .ui-takeaway-body {{
+            color: var(--text);
+            font-size: 0.98rem;
+            font-weight: 650;
+            line-height: 1.5;
+            margin: 0;
+        }}
+        .ui-metric-card {{
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.9rem 0.95rem;
+            min-height: 154px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
+        }}
+        .ui-metric-card.primary {{
+            border-top: 4px solid var(--primary);
+        }}
+        .ui-metric-card.warning {{
+            border-top: 4px solid var(--accent);
+        }}
+        .ui-metric-card.audit {{
+            border-top: 4px solid #F97316;
+        }}
+        .ui-metric-card.danger {{
+            border-top: 4px solid var(--danger);
+        }}
+        .ui-metric-card.secondary {{
+            border-top: 4px solid var(--muted);
+        }}
+        .ui-metric-topline {{
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.55rem;
+            margin-bottom: 0.42rem;
+        }}
+        .ui-metric-label {{
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }}
+        .ui-metric-value {{
+            color: var(--text);
+            font-size: 1.8rem;
+            line-height: 1.05;
+            font-weight: 820;
+            margin-bottom: 0.48rem;
+        }}
+        .ui-metric-note {{
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.42;
+            margin: 0 0 0.6rem 0;
+        }}
+        .ui-metric-meta {{
+            color: var(--muted);
+            font-size: 0.78rem;
+            line-height: 1.35;
+            border-top: 1px solid rgba(215, 227, 224, 0.75);
+            padding-top: 0.45rem;
+        }}
+        .ui-step-row {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin: 0 0 0.95rem 0;
+        }}
+        .ui-step {{
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-weight: 720;
+            padding: 0.32rem 0.65rem;
+        }}
+        .ui-step.active {{
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary);
+        }}
         .ui-insight-panel {{
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -401,6 +569,97 @@ def apply_design_system(*, max_width: int = 1460, extra_css: str = "") -> None:
             line-height: 1.5;
             margin: 0;
         }}
+        .ui-chart-head {{
+            display: flex;
+            justify-content: space-between;
+            gap: 0.8rem;
+            align-items: flex-start;
+            margin-bottom: 0.55rem;
+        }}
+        .ui-chart-title {{
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 780;
+            line-height: 1.25;
+            margin: 0;
+        }}
+        .ui-chart-subtitle {{
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.4;
+            margin: 0.18rem 0 0 0;
+        }}
+        .ui-chart-meta {{
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+            text-align: right;
+        }}
+        .ui-chart-takeaway {{
+            color: var(--text);
+            background: #F8FAFC;
+            border: 1px solid rgba(215, 227, 224, 0.75);
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 650;
+            line-height: 1.45;
+            padding: 0.64rem 0.72rem;
+            margin: 0.55rem 0 0.8rem 0;
+        }}
+        .ui-chart-caption {{
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            margin: 0.68rem 0 0 0;
+        }}
+        .ui-warning-inline {{
+            color: #9A3412;
+            background: #FFF7ED;
+            border: 1px solid rgba(249, 115, 22, 0.24);
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 650;
+            line-height: 1.4;
+            padding: 0.58rem 0.7rem;
+            margin: 0.55rem 0 0.75rem 0;
+        }}
+        .ui-flow-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+            gap: 0.65rem;
+            margin: 0.75rem 0 1rem 0;
+        }}
+        .ui-flow-node {{
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0.75rem 0.8rem;
+            min-height: 96px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+        }}
+        .ui-flow-step {{
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }}
+        .ui-flow-title {{
+            color: var(--text);
+            font-size: 0.96rem;
+            font-weight: 780;
+            line-height: 1.25;
+            margin-bottom: 0.25rem;
+        }}
+        .ui-flow-note {{
+            color: var(--muted);
+            font-size: 0.8rem;
+            line-height: 1.35;
+            margin: 0;
+        }}
         {extra_css}
         </style>
         """,
@@ -419,32 +678,16 @@ def render_page_header(
 ) -> None:
     """Render a consistent page title, purpose line, and executive takeaway."""
     pills = pills or []
-    pill_html = "".join(
-        (
-            f'<span class="ui-pill {html.escape(tone)}">{html.escape(text)}</span>'
-        )
-        for text, tone in pills
-    )
-    takeaway_html = ""
+    st.caption(kicker)
+    st.title(title)
+    st.write(description)
     if takeaway:
-        takeaway_html = (
-            '<div class="ui-executive-box">'
-            f'<div class="ui-executive-label">{html.escape(takeaway_label)}</div>'
-            f'<p class="ui-executive-body">{html.escape(takeaway)}</p>'
-            "</div>"
-        )
-    st.markdown(
-        f"""
-        <section class="ui-page-header">
-            <div class="ui-kicker">{html.escape(kicker)}</div>
-            <h1 class="ui-page-title">{html.escape(title)}</h1>
-            <p class="ui-page-description">{html.escape(description)}</p>
-            {takeaway_html}
-            <div class="ui-pill-row">{pill_html}</div>
-        </section>
-        """,
-        unsafe_allow_html=True,
-    )
+        st.info(f"**{takeaway_label}:** {takeaway}")
+    if pills:
+        columns = st.columns(min(len(pills), 6))
+        for index, (text, tone) in enumerate(pills):
+            with columns[index % len(columns)]:
+                st.badge(text, color=badge_color_for_status(tone))
 
 
 def render_kpi_row(cards: Sequence[dict[str, str]]) -> None:
@@ -453,18 +696,104 @@ def render_kpi_row(cards: Sequence[dict[str, str]]) -> None:
         return
     columns = st.columns(len(cards))
     for column, card in zip(columns, cards):
-        tone = str(card.get("tone", "primary"))
         with column:
-            st.markdown(
-                f"""
-                <section class="ui-kpi-card {html.escape(tone)}">
-                    <div class="ui-kpi-label">{html.escape(str(card.get("label", "")))}</div>
-                    <div class="ui-kpi-value">{html.escape(str(card.get("value", "")))}</div>
-                    <p class="ui-kpi-note">{html.escape(str(card.get("note", "")))}</p>
-                </section>
-                """,
-                unsafe_allow_html=True,
-            )
+            with st.container(border=True):
+                st.caption(str(card.get("label", "")).upper())
+                st.markdown(f"### {card.get('value', '')}")
+                note = str(card.get("note", ""))
+                if note:
+                    st.write(note)
+
+
+def _tone_for_status(status: str) -> str:
+    normalized = str(status).strip().lower()
+    if normalized == "reliable":
+        return "primary"
+    if normalized == "caution":
+        return "warning"
+    if normalized in {"audit", "audit / risk"}:
+        return "audit"
+    if normalized == "high risk":
+        return "danger"
+    if normalized in {"not production-ready", "not production ready", "monitor only"}:
+        return "secondary"
+    return "secondary"
+
+
+def badge_color_for_status(status: str) -> str:
+    """Map decision statuses or legacy CSS tones to native Streamlit badge colors."""
+    normalized = str(status).strip().lower()
+    if normalized in {"reliable", "primary", "success", "green"}:
+        return "green"
+    if normalized in {"caution", "warning", "yellow"}:
+        return "yellow"
+    if normalized in {"audit", "audit / risk", "orange"}:
+        return "orange"
+    if normalized in {"high risk", "danger", "red"}:
+        return "red"
+    if normalized in {"not production-ready", "not production ready", "monitor only", "secondary", "gray", "grey"}:
+        return "gray"
+    return "gray"
+
+
+def render_reliability_badge(status: str, *, reason: str | None = None) -> None:
+    """Render a compact status badge with an optional captioned reason."""
+    st.badge(str(status), color=badge_color_for_status(status))
+    if reason:
+        st.caption(reason)
+
+
+def render_takeaway_box(
+    takeaway: str,
+    *,
+    status: str = "Reliable",
+    label: str = "Takeaway",
+) -> None:
+    """Render the required section-level takeaway line."""
+    with st.container(border=True):
+        st.badge(status, color=badge_color_for_status(status))
+        st.markdown(f"**{label}:** {takeaway}")
+
+
+def render_metric_card(
+    *,
+    label: str,
+    value: str,
+    interpretation: str,
+    status: str,
+    sample_size: int | None = None,
+    coverage: str | None = None,
+    reason: str | None = None,
+) -> None:
+    """Render a decision-grade metric card with status, coverage, and sample size."""
+    meta_parts = []
+    if sample_size is not None:
+        meta_parts.append(f"n={sample_size:,}")
+    if coverage is not None:
+        meta_parts.append(f"coverage={coverage}")
+    if reason:
+        meta_parts.append(reason)
+    meta_text = " | ".join(meta_parts)
+    with st.container(border=True):
+        top_columns = st.columns([0.62, 0.38])
+        with top_columns[0]:
+            st.caption(label.upper())
+        with top_columns[1]:
+            st.badge(status, color=badge_color_for_status(status))
+        st.markdown(f"### {value}")
+        st.write(interpretation)
+        if meta_text:
+            st.caption(meta_text)
+
+
+def render_decision_journey(active_step: str) -> None:
+    """Show the Data Quality -> Evidence -> Model -> Decision -> Action journey."""
+    steps = ["Data Quality", "Evidence", "Model", "Decision", "Action"]
+    active_index = steps.index(active_step) + 1 if active_step in steps else None
+    journey = " -> ".join(f"{index}. {step}" for index, step in enumerate(steps, start=1))
+    st.caption(f"Decision journey: {journey}")
+    if active_index is not None:
+        st.badge(f"Current step {active_index}: {active_step}", color="primary")
 
 
 def render_insight_action_panel(
@@ -477,25 +806,13 @@ def render_insight_action_panel(
     """Render a short insight plus action box below top-level KPIs."""
     columns = st.columns(2)
     with columns[0]:
-        st.markdown(
-            f"""
-            <section class="ui-insight-panel">
-                <div class="ui-insight-title">{html.escape(insight_label)}</div>
-                <p class="ui-insight-body">{html.escape(insight)}</p>
-            </section>
-            """,
-            unsafe_allow_html=True,
-        )
+        with st.container(border=True):
+            st.markdown(f"**{insight_label}**")
+            st.write(insight)
     with columns[1]:
-        st.markdown(
-            f"""
-            <section class="ui-insight-panel">
-                <div class="ui-insight-title">{html.escape(implication_label)}</div>
-                <p class="ui-insight-body">{html.escape(implication)}</p>
-            </section>
-            """,
-            unsafe_allow_html=True,
-        )
+        with st.container(border=True):
+            st.markdown(f"**{implication_label}**")
+            st.write(implication)
 
 
 def add_top_n_flag(

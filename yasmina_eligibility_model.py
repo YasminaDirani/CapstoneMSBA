@@ -47,6 +47,7 @@ try:
     from sklearn.calibration import CalibratedClassifierCV
     from sklearn.compose import ColumnTransformer
     from sklearn.ensemble import (
+        ExtraTreesClassifier,
         GradientBoostingClassifier,
         HistGradientBoostingClassifier,
         RandomForestClassifier,
@@ -89,6 +90,13 @@ except ImportError as exc:
 DATA_PATH = Path("cleaned/faid_cleaned.csv")
 TARGET_COLUMN = "decision"
 POSITIVE_TARGET_LABEL = "awarded"
+POSITIVE_TARGET_LABELS = (
+    POSITIVE_TARGET_LABEL,
+    "awarded_affidavit_of_promise",
+)
+NEGATIVE_TARGET_LABELS = ("denied",)
+EXCLUDED_TARGET_LABELS = ("usaid",)
+ALLOW_ONLY_EXPLICIT_TARGET_LABELS = True
 
 ARTIFACT_DIR = Path("artifacts/yasmina_eligibility")
 MODEL_OUTPUT_PATH = ARTIFACT_DIR / "yasmina_eligibility_pipeline.joblib"
@@ -96,6 +104,8 @@ METADATA_OUTPUT_PATH = ARTIFACT_DIR / "yasmina_eligibility_metadata.json"
 REPORT_OUTPUT_PATH = ARTIFACT_DIR / "yasmina_eligibility_report.txt"
 ROC_CURVE_PATH = ARTIFACT_DIR / "yasmina_eligibility_roc_curve.png"
 PR_CURVE_PATH = ARTIFACT_DIR / "yasmina_eligibility_pr_curve.png"
+MODEL_ARTIFACT_TYPE = "yasmina_eligibility_bundle"
+MODEL_ARTIFACT_VERSION = 2
 
 RANDOM_STATE = 42
 VALIDATION_SIZE = 0.15
@@ -106,7 +116,7 @@ TOP_FEATURES_TO_SHOW = 20
 N_JOBS = 1
 
 THRESHOLD_GRID = np.linspace(0.05, 0.95, 181)
-SELECTED_THRESHOLD_POLICY = "best_f1"
+SELECTED_THRESHOLD_POLICY = "best_balanced_accuracy"
 MIN_PRECISION_FLOOR = 0.60
 MIN_RECALL_FLOOR: float | None = None
 
@@ -146,6 +156,18 @@ SUSPICIOUS_FEATURE_KEYWORDS = (
     "certificate_ownership",
     "travel_records",
 )
+DEFAULT_WORKFLOW_EXCLUSION_COLUMNS = {
+    "father_income_document_status",
+    "father_income_document_suspicious_flag",
+    "mother_income_document_status",
+    "certificate_ownership_clean",
+    "certificate_ownership_status",
+    "travel_records_clean",
+    "travel_records_category",
+    "travel_records_missing_flag",
+    "faid_missing_documents",
+    "faid_missing_documents_count",
+}
 
 DROP_HIGH_MISSINGNESS_COLUMNS = True
 HIGH_MISSINGNESS_THRESHOLD = 0.985
@@ -207,6 +229,8 @@ class ThresholdMetrics:
     accuracy: float
     precision: float
     recall: float
+    specificity: float
+    balanced_accuracy: float
     f1: float
     confusion_matrix: list[list[int]]
 
@@ -245,6 +269,11 @@ def normalize_label(series: pd.Series) -> pd.Series:
     return series.astype("string").str.strip().str.lower()
 
 
+def normalize_label_values(values: tuple[str, ...] | list[str] | set[str]) -> set[str]:
+    """Normalize a label collection into a lower-cased set."""
+    return {str(value).strip().lower() for value in values if str(value).strip()}
+
+
 def resolve_target_column(dataframe: pd.DataFrame, preferred_target: str = TARGET_COLUMN) -> str:
     """Find the target column using a strict preference with safe fallbacks."""
     if preferred_target in dataframe.columns:
@@ -271,20 +300,35 @@ def resolve_target_column(dataframe: pd.DataFrame, preferred_target: str = TARGE
 def prepare_target(
     dataframe: pd.DataFrame,
     target_column: str = TARGET_COLUMN,
-    positive_label: str = POSITIVE_TARGET_LABEL,
+    positive_labels: tuple[str, ...] = POSITIVE_TARGET_LABELS,
+    negative_labels: tuple[str, ...] = NEGATIVE_TARGET_LABELS,
+    excluded_labels: tuple[str, ...] = EXCLUDED_TARGET_LABELS,
 ) -> tuple[pd.DataFrame, pd.Series, dict[str, Any]]:
     """
     Build the binary target.
 
-    Awarded -> 1
-    Everything else -> 0
+    Explicit award labels -> 1
+    Explicit denial labels -> 0
+
+    Non-standard labels are excluded instead of being silently folded into the
+    negative class.
 
     Missing target rows are dropped because they are unlabeled.
     """
     resolved_target = resolve_target_column(dataframe, target_column)
-    normalized_positive_label = str(positive_label).strip().lower()
     raw_target = dataframe[resolved_target].copy()
     normalized_target = normalize_label(raw_target)
+    normalized_positive_labels = normalize_label_values(positive_labels)
+    normalized_negative_labels = normalize_label_values(negative_labels)
+    normalized_excluded_labels = normalize_label_values(excluded_labels)
+
+    if not normalized_positive_labels:
+        raise ValueError("At least one positive target label is required.")
+    if not normalized_negative_labels:
+        raise ValueError("At least one negative target label is required.")
+    overlap = normalized_positive_labels & normalized_negative_labels
+    if overlap:
+        raise ValueError(f"Positive and negative target labels overlap: {sorted(overlap)}")
 
     labeled_mask = normalized_target.notna() & normalized_target.fillna("").ne("")
     labeled_rows = int(labeled_mask.sum())
@@ -293,20 +337,49 @@ def prepare_target(
     if labeled_rows == 0:
         raise ValueError("No labeled rows remain after excluding missing target values.")
 
-    labeled_dataframe = dataframe.loc[labeled_mask].copy()
-    binary_target = (normalized_target.loc[labeled_mask] == normalized_positive_label).astype(int)
+    labeled_target = normalized_target.loc[labeled_mask]
+    allowed_labels = normalized_positive_labels | normalized_negative_labels
+    recognized_mask = labeled_target.isin(allowed_labels)
+    explicitly_excluded_mask = labeled_target.isin(normalized_excluded_labels)
+    ambiguous_mask = ~recognized_mask
+
+    if ALLOW_ONLY_EXPLICIT_TARGET_LABELS:
+        training_mask = labeled_mask.copy()
+        training_mask.loc[labeled_mask] = recognized_mask.to_numpy()
+    else:
+        training_mask = labeled_mask.copy()
+
+    training_rows = int(training_mask.sum())
+    dropped_non_binary_rows = int(labeled_rows - training_rows)
+    if training_rows == 0:
+        raise ValueError("No explicit binary target rows remain after label filtering.")
+
+    training_dataframe = dataframe.loc[training_mask].copy()
+    training_target_labels = normalized_target.loc[training_mask]
+    binary_target = training_target_labels.isin(normalized_positive_labels).astype(int)
 
     metadata = {
         "target_column": resolved_target,
-        "positive_label": normalized_positive_label,
+        "positive_labels": sorted(normalized_positive_labels),
+        "negative_labels": sorted(normalized_negative_labels),
+        "excluded_labels": sorted(normalized_excluded_labels),
         "rows_total": int(len(dataframe)),
         "rows_labeled": labeled_rows,
         "rows_dropped_missing_target": dropped_unlabeled_rows,
+        "rows_used_for_training": training_rows,
+        "rows_dropped_non_binary_target": dropped_non_binary_rows,
         "target_distribution": binary_target.value_counts().sort_index().to_dict(),
         "target_positive_rate": float(binary_target.mean()),
-        "raw_target_value_counts": normalized_target.loc[labeled_mask].value_counts().to_dict(),
+        "raw_target_value_counts": labeled_target.value_counts().to_dict(),
+        "training_target_value_counts": training_target_labels.value_counts().to_dict(),
+        "explicitly_excluded_target_value_counts": labeled_target.loc[
+            explicitly_excluded_mask
+        ].value_counts().to_dict(),
+        "ambiguous_target_value_counts": labeled_target.loc[
+            ambiguous_mask & ~explicitly_excluded_mask
+        ].value_counts().to_dict(),
     }
-    return labeled_dataframe, binary_target, metadata
+    return training_dataframe, binary_target, metadata
 
 
 def select_feature_frame(
@@ -841,6 +914,28 @@ def get_model_specs(
                 "model__max_features": [0.30, 0.50, "sqrt"],
             },
         ),
+        "Extra Trees": ModelSpec(
+            name="Extra Trees",
+            family="tree",
+            estimator=ExtraTreesClassifier(
+                bootstrap=False,
+                class_weight=class_weight,
+                max_depth=12,
+                max_features=0.50,
+                min_samples_leaf=4,
+                min_samples_split=10,
+                n_estimators=500,
+                n_jobs=N_JOBS,
+                random_state=RANDOM_STATE,
+            ),
+            tune_param_distributions={
+                "model__n_estimators": [300, 500, 700],
+                "model__max_depth": [8, 10, 12, 16, None],
+                "model__min_samples_leaf": [2, 4, 6, 10],
+                "model__min_samples_split": [4, 8, 10, 16],
+                "model__max_features": [0.30, 0.50, "sqrt"],
+            },
+        ),
         "Gradient Boosting": ModelSpec(
             name="Gradient Boosting",
             family="tree",
@@ -1225,13 +1320,24 @@ def compute_threshold_metrics(
     """Compute threshold-dependent classification metrics."""
     predictions = (probabilities >= threshold).astype(int)
     matrix = confusion_matrix(target_true, predictions, labels=[0, 1]).tolist()
+    true_negative, false_positive = matrix[0]
+    false_negative, true_positive = matrix[1]
+    specificity_denominator = true_negative + false_positive
+    specificity = (
+        float(true_negative / specificity_denominator)
+        if specificity_denominator > 0
+        else 0.0
+    )
+    recall = float(recall_score(target_true, predictions, zero_division=0))
 
     return ThresholdMetrics(
         label=label,
         threshold=float(threshold),
         accuracy=float(accuracy_score(target_true, predictions)),
         precision=float(precision_score(target_true, predictions, zero_division=0)),
-        recall=float(recall_score(target_true, predictions, zero_division=0)),
+        recall=recall,
+        specificity=specificity,
+        balanced_accuracy=float((recall + specificity) / 2.0),
         f1=float(f1_score(target_true, predictions, zero_division=0)),
         confusion_matrix=matrix,
     )
@@ -1424,6 +1530,8 @@ def build_threshold_grid_report(
                 "accuracy": metrics.accuracy,
                 "precision": metrics.precision,
                 "recall": metrics.recall,
+                "specificity": metrics.specificity,
+                "balanced_accuracy": metrics.balanced_accuracy,
                 "f1": metrics.f1,
             }
         )
@@ -1448,6 +1556,7 @@ def tune_thresholds(
     Policies:
     - default_0.50
     - best_f1
+    - best_balanced_accuracy
     - max_recall_with_precision_floor
     - max_precision_with_recall_floor (only when configured)
     """
@@ -1471,6 +1580,18 @@ def tune_thresholds(
         probabilities,
         threshold=float(best_f1_row["threshold"]),
         label="best_f1",
+    )
+
+    best_balanced_accuracy_row = threshold_grid.sort_values(
+        by=["balanced_accuracy", "f1", "precision", "recall", "threshold"],
+        ascending=[False, False, False, False, True],
+        ignore_index=True,
+    ).iloc[0]
+    policy_results["best_balanced_accuracy"] = compute_threshold_metrics(
+        target_true,
+        probabilities,
+        threshold=float(best_balanced_accuracy_row["threshold"]),
+        label="best_balanced_accuracy",
     )
 
     recall_candidates = threshold_grid.copy()
@@ -1558,13 +1679,15 @@ def threshold_results_to_frame(
                 "accuracy": metrics.accuracy,
                 "precision": metrics.precision,
                 "recall": metrics.recall,
+                "specificity": metrics.specificity,
+                "balanced_accuracy": metrics.balanced_accuracy,
                 "f1": metrics.f1,
             }
         )
 
     return pd.DataFrame(rows).sort_values(
-        by=["selected", "f1", "recall"],
-        ascending=[False, False, False],
+        by=["selected", "balanced_accuracy", "f1", "recall"],
+        ascending=[False, False, False, False],
         ignore_index=True,
     )
 
@@ -2035,9 +2158,14 @@ def build_report_text(
 def build_config_summary() -> dict[str, Any]:
     """Capture the key runtime configuration in metadata/reporting."""
     return {
+        "model_artifact_type": MODEL_ARTIFACT_TYPE,
+        "model_artifact_version": MODEL_ARTIFACT_VERSION,
         "data_path": str(DATA_PATH.resolve()),
         "target_column": TARGET_COLUMN,
         "positive_target_label": POSITIVE_TARGET_LABEL,
+        "positive_target_labels": list(POSITIVE_TARGET_LABELS),
+        "negative_target_labels": list(NEGATIVE_TARGET_LABELS),
+        "excluded_target_labels": list(EXCLUDED_TARGET_LABELS),
         "validation_size": VALIDATION_SIZE,
         "test_size": TEST_SIZE,
         "cv_folds": CV_FOLDS,
@@ -2062,6 +2190,55 @@ def build_config_summary() -> dict[str, Any]:
         "high_cardinality_min_unique": HIGH_CARDINALITY_MIN_UNIQUE,
         "high_cardinality_unique_ratio": HIGH_CARDINALITY_UNIQUE_RATIO,
         "high_cardinality_avg_length_threshold": HIGH_CARDINALITY_AVG_LENGTH_THRESHOLD,
+        "default_workflow_exclusion_columns": sorted(DEFAULT_WORKFLOW_EXCLUSION_COLUMNS),
+    }
+
+
+def build_model_bundle(
+    *,
+    deployed_model: Any,
+    explainability_model: Any | None,
+    config_summary: dict[str, Any],
+    data_metadata: dict[str, Any],
+    split_metadata: dict[str, Any],
+    normal_result: dict[str, Any],
+) -> dict[str, Any]:
+    """Package the deployable model together with the settings required at inference time."""
+    test_summary = normal_result["test_summary"] or {}
+    calibration_summary = normal_result["calibration_summary"]
+
+    return {
+        "artifact_type": MODEL_ARTIFACT_TYPE,
+        "artifact_version": MODEL_ARTIFACT_VERSION,
+        "estimator": deployed_model,
+        "explainability_estimator": explainability_model,
+        "selected_threshold_policy": normal_result["selected_threshold_policy"],
+        "selected_threshold": test_summary.get("selected_threshold"),
+        "selected_model_name": normal_result["selected_candidate"],
+        "selected_model_family": normal_result["selected_model_family"],
+        "calibration_mode_selected": calibration_summary["selected_mode"],
+        "target_definition": {
+            "target_column": data_metadata["target_column"],
+            "positive_labels": data_metadata["positive_labels"],
+            "negative_labels": data_metadata["negative_labels"],
+            "excluded_labels": data_metadata["excluded_labels"],
+        },
+        "feature_definition": {
+            "retained_feature_count": normal_result["retained_feature_count"],
+            "extra_excluded_columns": normal_result["extra_excluded_columns"],
+            "feature_pruning": normal_result["feature_pruning"],
+        },
+        "training_summary": {
+            "rows_used_for_training": data_metadata["rows_used_for_training"],
+            "train_rows": split_metadata["train_rows"],
+            "validation_rows": split_metadata["validation_rows"],
+            "test_rows": split_metadata["test_rows"],
+            "selected_validation_roc_auc": normal_result["selection_summary"][
+                "selected_model_validation_roc_auc"
+            ],
+            "test_roc_auc": test_summary.get("probability_metrics", {}).get("roc_auc"),
+        },
+        "config_snapshot": config_summary,
     }
 
 
@@ -2427,11 +2604,18 @@ def main() -> None:
         labeled_dataframe, binary_target, data_metadata = prepare_target(
             dataframe=raw_dataframe,
             target_column=TARGET_COLUMN,
-            positive_label=POSITIVE_TARGET_LABEL,
+            positive_labels=POSITIVE_TARGET_LABELS,
+            negative_labels=NEGATIVE_TARGET_LABELS,
+            excluded_labels=EXCLUDED_TARGET_LABELS,
         )
         base_feature_frame, excluded_leakage_columns = select_feature_frame(
             dataframe=labeled_dataframe,
             target_column=data_metadata["target_column"],
+        )
+        baseline_workflow_exclusions = sorted(
+            column
+            for column in base_feature_frame.columns
+            if column in DEFAULT_WORKFLOW_EXCLUSION_COLUMNS
         )
 
         (
@@ -2451,12 +2635,14 @@ def main() -> None:
             "validation_positive_rate": float(target_valid.mean()),
             "test_positive_rate": float(target_test.mean()),
             "explicitly_excluded_leakage_columns": excluded_leakage_columns,
+            "default_workflow_exclusion_columns": baseline_workflow_exclusions,
         }
 
         print_section("Data Summary")
         print(f"Loaded rows: {len(raw_dataframe):,}")
         print(f"Labeled rows used: {len(labeled_dataframe):,}")
         print(f"Rows dropped for missing target: {data_metadata['rows_dropped_missing_target']:,}")
+        print(f"Rows dropped for non-binary target labels: {data_metadata['rows_dropped_non_binary_target']:,}")
         print(f"Train rows: {len(base_train_features):,}")
         print(f"Validation rows: {len(base_valid_features):,}")
         print(f"Test rows: {len(base_test_features):,}")
@@ -2464,6 +2650,7 @@ def main() -> None:
         print(f"Validation positive rate: {target_valid.mean():.4f}")
         print(f"Test positive rate: {target_test.mean():.4f}")
         print(f"Explicit leakage exclusions: {len(excluded_leakage_columns)}")
+        print(f"Workflow-risk exclusions: {len(baseline_workflow_exclusions)}")
 
         normal_result, normal_artifacts = run_experiment(
             experiment_name="Normal Workflow",
@@ -2473,7 +2660,7 @@ def main() -> None:
             target_train=target_train,
             target_valid=target_valid,
             target_test=target_test,
-            extra_excluded_columns=[],
+            extra_excluded_columns=baseline_workflow_exclusions,
             evaluate_test=True,
             produce_feature_insights=True,
         )
@@ -2484,7 +2671,11 @@ def main() -> None:
         }
 
         if RUN_LEAKAGE_STRESS_TEST:
-            suspicious_columns = resolve_suspicious_features(base_feature_frame.columns.tolist())
+            suspicious_columns = [
+                column
+                for column in resolve_suspicious_features(base_feature_frame.columns.tolist())
+                if column not in baseline_workflow_exclusions
+            ]
             if suspicious_columns:
                 stress_result, _ = run_experiment(
                     experiment_name="Leakage Stress Test",
@@ -2511,7 +2702,16 @@ def main() -> None:
         if normal_artifacts.deployed_model is None or normal_artifacts.plot_probabilities is None:
             raise RuntimeError("Normal workflow did not produce a final deployed model.")
 
-        joblib.dump(normal_artifacts.deployed_model, MODEL_OUTPUT_PATH)
+        config_summary = build_config_summary()
+        model_bundle = build_model_bundle(
+            deployed_model=normal_artifacts.deployed_model,
+            explainability_model=normal_artifacts.explainability_model,
+            config_summary=config_summary,
+            data_metadata=data_metadata,
+            split_metadata=split_metadata,
+            normal_result=normal_result,
+        )
+        joblib.dump(model_bundle, MODEL_OUTPUT_PATH)
         plot_summary = save_curves(
             target_true=target_test,
             probabilities=normal_artifacts.plot_probabilities,
@@ -2519,7 +2719,6 @@ def main() -> None:
         )
         optional_dependencies = dict(OPTIONAL_DEPENDENCY_STATUS)
 
-        config_summary = build_config_summary()
         metadata_payload = {
             "config": config_summary,
             "data": data_metadata,
@@ -2528,6 +2727,8 @@ def main() -> None:
             "leakage_stress_test": leakage_summary,
             "optional_dependencies": optional_dependencies,
             "artifacts": {
+                "artifact_type": MODEL_ARTIFACT_TYPE,
+                "artifact_version": MODEL_ARTIFACT_VERSION,
                 "pipeline_path": str(MODEL_OUTPUT_PATH.resolve()),
                 "metadata_path": str(METADATA_OUTPUT_PATH.resolve()),
                 "report_path": str(REPORT_OUTPUT_PATH.resolve()),

@@ -20,13 +20,15 @@ from utils.chart_insights import (
     numeric_decision_comparison_insights,
     school_concentration_insights,
 )
-from utils.data_loader import DEFAULT_DATA_PATH, load_csv
+from utils.data_loader import DEFAULT_DATA_PATH, load_csv, load_json, prepare_dashboard_dataframe
+from utils.decision_labels import COMPARABLE_DECISION_LABELS, POSITIVE_DECISION_LABELS, normalize_decision_series
 from utils.decision_analytics import prepare_decision_analytics_frame, summarize_numeric_drivers
 from utils.model_explainability import (
     extract_top_feature_drivers,
     extract_top_feature_importances,
 )
 from utils.prediction_utils import add_prediction_probabilities
+from utils.source_paths import DEFAULT_MODEL_1_SUMMARY_PATH, DEFAULT_MODEL_METADATA_PATH
 from utils.ui import (
     ACCENT_COLOR,
     DANGER_COLOR,
@@ -35,6 +37,7 @@ from utils.ui import (
     add_top_n_flag,
     apply_design_system,
     build_color_condition,
+    render_decision_journey,
     render_insight_action_panel,
     render_kpi_row,
     render_page_header,
@@ -48,10 +51,6 @@ except Exception:
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-DEFAULT_MODEL_METADATA_PATH = (
-    ROOT_DIR / "artifacts" / "yasmina_eligibility" / "yasmina_eligibility_metadata.json"
-)
-DEFAULT_MODEL_1_SUMMARY_PATH = ROOT_DIR / "artifacts" / "model_1" / "model_1_summary.json"
 LOCAL_MODEL_1_NOTEBOOK_PATH = os.environ.get("YASMINA_MODEL_1_NOTEBOOK_PATH")
 
 PROFILE_METRIC_OPTIONS: dict[str, tuple[str, str, str]] = {
@@ -173,6 +172,26 @@ CATALOG_BOUNDARIES = (
     "No fairness claims.",
 )
 
+SAFE_PREVIEW_COLUMNS = (
+    "predicted_award_probability",
+    "raw_source_sheet_name",
+    "raw_source_row_number",
+    "application_term",
+    "application_track",
+    "level",
+    "nationality",
+    "applicant_citizenship",
+    "decision",
+    "school",
+    "school_was_missing",
+    "dependents_count",
+    "siblings_at_aub_count",
+    "siblings_not_at_aub_count",
+    "special_family_circumstances_category",
+    "loans_count",
+    "property_types",
+)
+
 
 def split_chart_guidance(lines: list[str]) -> tuple[list[str], list[str]]:
     """Group chart takeaways into what the dataset supports versus where it is limited."""
@@ -196,6 +215,29 @@ def split_chart_guidance(lines: list[str]) -> tuple[list[str], list[str]]:
         )
 
     return usable_lines, limited_lines
+
+
+def build_preview_display(
+    preview_frame: pd.DataFrame,
+    *,
+    include_all_columns: bool,
+) -> pd.DataFrame:
+    """Return the record preview with sensitive free-text columns hidden by default."""
+    if include_all_columns:
+        display = preview_frame.copy()
+    else:
+        available_columns = [
+            column for column in SAFE_PREVIEW_COLUMNS if column in preview_frame.columns
+        ]
+        display = preview_frame[available_columns].copy()
+
+    if "predicted_award_probability" not in display.columns:
+        return display
+
+    ordered_columns = ["predicted_award_probability"] + [
+        column for column in display.columns if column != "predicted_award_probability"
+    ]
+    return display[ordered_columns]
 
 
 def render_chart_insights(
@@ -236,49 +278,61 @@ def _as_dict(value: object) -> dict[str, object]:
 def classify_feature_family(column_name: str) -> str:
     """Assign each column to a thesis-friendly feature family."""
     name = column_name.strip().lower()
+    core_name = name
 
-    if name.startswith("father_"):
+    if name.startswith("raw_"):
+        if name in {"raw_source_row_number", "raw_source_sheet_name"}:
+            return "Source Tracking"
+        return "Raw Intake"
+    if name.startswith("qa_"):
+        return "Quality Assurance"
+    if name.startswith("inferred_"):
+        return "Inferred & Derived"
+    if name.startswith("parsed_"):
+        core_name = name.removeprefix("parsed_")
+
+    if core_name.startswith("father_"):
         return "Father Profile"
-    if name.startswith("mother_"):
+    if core_name.startswith("mother_"):
         return "Mother Profile"
     if (
-        name.startswith("application_")
-        or name.startswith("applicant_")
-        or name in {"level", "nationality", "school", "school_was_missing", "spouse_citizenship"}
+        core_name.startswith("application_")
+        or core_name.startswith("applicant_")
+        or core_name in {"level", "nationality", "school", "school_was_missing", "spouse_citizenship"}
     ):
         return "Application & Demographics"
-    if name.startswith("siblings_") or name.startswith("dependents_"):
+    if core_name.startswith("siblings_") or core_name.startswith("dependents_"):
         return "Household Composition"
     if (
-        name.startswith("financial_assistants_")
-        or name.startswith("investments_")
-        or name.startswith("source_of_income")
+        core_name.startswith("financial_assistants_")
+        or core_name.startswith("investments_")
+        or core_name.startswith("source_of_income")
     ):
         return "Income, Assistance & Investments"
     if (
-        name.startswith("special_family_circumstances_")
-        or name.startswith("travel_records_")
-        or name.startswith("certificate_ownership_")
+        core_name.startswith("special_family_circumstances_")
+        or core_name.startswith("travel_records_")
+        or core_name.startswith("certificate_ownership_")
     ):
         return "Context & Documentation"
-    if name.startswith("loans_"):
+    if core_name.startswith("loans_"):
         return "Loans & Liabilities"
     if (
-        name.startswith("properties_")
-        or name.startswith("property_")
-        or name.startswith("cars_")
-        or name.startswith("car_")
+        core_name.startswith("properties_")
+        or core_name.startswith("property_")
+        or core_name.startswith("cars_")
+        or core_name.startswith("car_")
     ):
         return "Assets & Property"
     if (
-        name == "decision"
-        or name == "bin_status"
-        or name.startswith("need_")
-        or name.startswith("merit_")
-        or name.startswith("submission_")
-        or name.startswith("consent_")
-        or name.startswith("faid_")
-        or name.startswith("over_and_above_")
+        core_name == "decision"
+        or core_name == "bin_status"
+        or core_name.startswith("need_")
+        or core_name.startswith("merit_")
+        or core_name.startswith("submission_")
+        or core_name.startswith("consent_")
+        or core_name.startswith("faid_")
+        or core_name.startswith("over_and_above_")
     ):
         return "Administrative & Outcomes"
     return "Other / Derived"
@@ -336,7 +390,7 @@ def build_decision_audit_frame(dataframe: pd.DataFrame) -> pd.DataFrame:
     normalized_labels = display_labels.str.lower()
 
     status = pd.Series("Non-standard outcome", index=dataframe.index, dtype="string")
-    status = status.mask(normalized_labels.isin(["awarded", "denied"]), "Comparable outcome")
+    status = status.mask(normalized_labels.isin(COMPARABLE_DECISION_LABELS), "Comparable outcome")
     status = status.mask(display_labels.eq("Missing"), "Missing outcome")
 
     audit_frame = (
@@ -450,7 +504,7 @@ def build_submission_year_summary(dataframe: pd.DataFrame) -> pd.DataFrame:
 
     working["submission_year"] = working["submission_year"].astype(int)
     decision_clean = (
-        working["decision"].astype("string").fillna("").str.strip().str.lower()
+        normalize_decision_series(working["decision"]).fillna("")
         if "decision" in working.columns
         else pd.Series("", index=working.index, dtype="string")
     )
@@ -1860,17 +1914,6 @@ def build_saved_feature_importance_frame(
 
 
 @st.cache_data(show_spinner=False)
-def load_json(json_path: str | Path) -> dict[str, object]:
-    """Load JSON metadata from disk and cache it between reruns."""
-    path = Path(json_path)
-    if not path.is_absolute():
-        path = ROOT_DIR / path
-    with path.open("r", encoding="utf-8") as json_file:
-        payload = json.load(json_file)
-    return payload if isinstance(payload, dict) else {}
-
-
-@st.cache_data(show_spinner=False)
 def load_model_1_summary(
     summary_path: str | Path = DEFAULT_MODEL_1_SUMMARY_PATH,
     notebook_path: str | Path | None = LOCAL_MODEL_1_NOTEBOOK_PATH,
@@ -1974,9 +2017,10 @@ apply_design_system()
 if not DEFAULT_DATA_PATH.exists():
     st.error(f"CSV file not found: {DEFAULT_DATA_PATH}")
 else:
-    df = load_csv(DEFAULT_DATA_PATH)
-    preview_df = df.copy()
-    column_catalog = build_column_catalog(df)
+    raw_df = load_csv(DEFAULT_DATA_PATH)
+    df = prepare_dashboard_dataframe(raw_df)
+    preview_df = raw_df.copy()
+    column_catalog = build_column_catalog(raw_df)
     feature_family_summary = build_feature_family_summary(column_catalog)
     missingness_summary = build_missingness_summary(column_catalog)
     decision_audit = build_decision_audit_frame(df)
@@ -2059,6 +2103,7 @@ else:
     parent_income_coverage = lookup_variable_coverage(key_variable_coverage, "Total Parent Income")
     award_rate_value = float(overview["award_rate"]) if not labeled_df.empty else float("nan")
 
+    render_decision_journey("Evidence")
     render_page_header(
         title="Data Overview",
         description="Defines what conclusions in this project are reliable, limited, and safe to carry forward into decisions.",
@@ -2711,14 +2756,13 @@ else:
                     st.info("No valid records are available for the selected comparison.")
                 else:
                     coverage_share = len(comparison_df) / max(len(labeled_df), 1)
+                    comparison_decision = normalize_decision_series(comparison_df["decision"])
                     awarded_values = comparison_df.loc[
-                        comparison_df["decision"].astype("string").str.strip().str.lower()
-                        == "awarded",
+                        comparison_decision == "awarded",
                         metric_column,
                     ]
                     denied_values = comparison_df.loc[
-                        comparison_df["decision"].astype("string").str.strip().str.lower()
-                        == "denied",
+                        comparison_decision == "denied",
                         metric_column,
                     ]
 
@@ -3338,14 +3382,15 @@ else:
             value=15,
             step=5,
         )
-        preview_display = preview_df.copy()
-        if "predicted_award_probability" in preview_display.columns:
-            ordered_columns = ["predicted_award_probability"] + [
-                column
-                for column in preview_display.columns
-                if column != "predicted_award_probability"
-            ]
-            preview_display = preview_display[ordered_columns]
+        show_all_preview_columns = st.checkbox(
+            "Show all raw columns in preview",
+            value=False,
+            help="Includes free-text and raw intake fields. Keep off for a cleaner, safer review view.",
+        )
+        preview_display = build_preview_display(
+            preview_df,
+            include_all_columns=show_all_preview_columns,
+        )
         st.dataframe(preview_display.head(preview_row_count), width="stretch")
 
         if "predicted_award_probability" in preview_display.columns:

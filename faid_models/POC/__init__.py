@@ -1,0 +1,1 @@
+"""Purchasing-power experiment package."""

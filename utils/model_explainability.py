@@ -3,6 +3,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from utils.model_artifact import resolve_explainability_estimator
+
 
 def clean_feature_name(feature_name: str) -> str:
     """Make transformed pipeline feature names easier to read in charts."""
@@ -26,7 +28,10 @@ def get_transformed_feature_names(preprocessor: Any) -> list[str]:
 
 def _resolve_model_components(model: Any) -> tuple[Any | None, Any]:
     """Return the pipeline preprocessor and final estimator when available."""
-    pipeline = model
+    pipeline = resolve_explainability_estimator(model)
+    if pipeline is None:
+        raise AttributeError("The loaded model artifact does not contain an explainability estimator.")
+
     preprocessor = getattr(pipeline, "named_steps", {}).get("preprocessor")
     estimator = getattr(pipeline, "named_steps", {}).get("model", pipeline)
     return preprocessor, estimator

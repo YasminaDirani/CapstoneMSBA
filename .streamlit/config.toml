@@ -4,6 +4,13 @@ primaryColor = "#1F7A6C"
 backgroundColor = "#F8FAFC"
 secondaryBackgroundColor = "#FFFFFF"
 textColor = "#1F2937"
+borderColor = "#D7E3E0"
+baseRadius = "large"
+buttonRadius = "full"
+chartCategoricalColors = ["#1F7A6C", "#2CA58D", "#F59E0B", "#F97316", "#DC2626", "#64748B"]
+chartSequentialColors = ["#F0FDFA", "#CCFBF1", "#99F6E4", "#5EEAD4", "#2DD4BF", "#14B8A6", "#0D9488", "#0F766E", "#115E59", "#134E4A"]
+chartDivergingColors = ["#991B1B", "#DC2626", "#F97316", "#F59E0B", "#FDE68A", "#D9F99D", "#86EFAC", "#2CA58D", "#1F7A6C", "#165E55"]
+showSidebarBorder = true
 font = "sans serif"
 
 [client]

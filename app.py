@@ -24,15 +24,55 @@ def main() -> None:
     navigation = st.navigation(
         [
             st.Page(
-                "pages/Data_Overview.py",
-                title="Data Overview",
-                icon="🗂️",
+                "pages/Executive_Summary.py",
+                title="Start Here",
+                icon="🏁",
                 default=True,
             ),
             st.Page(
+                "pages/Data_Reliability_QA.py",
+                title="Data Reliability & QA",
+                icon="🛡️",
+            ),
+            st.Page(
+                "pages/Data_Overview.py",
+                title="Evidence Overview",
+                icon="🗂️",
+            ),
+            st.Page(
                 "pages/Decision_Insights.py",
-                title="Decision Insights",
+                title="Evidence Insights",
                 icon="🧠",
+            ),
+            st.Page(
+                "pages/Eligibility_Model.py",
+                title="Eligibility Model",
+                icon="🎯",
+            ),
+            st.Page(
+                "pages/Aid_Percentage_Model.py",
+                title="Aid Percentage Model",
+                icon="📈",
+            ),
+            st.Page(
+                "pages/Purchasing_Power_Experiment.py",
+                title="Purchasing Power",
+                icon="🪙",
+            ),
+            st.Page(
+                "pages/Decision_Engine.py",
+                title="Decision Engine",
+                icon="⚖️",
+            ),
+            st.Page(
+                "pages/Review_Queue.py",
+                title="Action Queue",
+                icon="🧾",
+            ),
+            st.Page(
+                "pages/Final_Recommendation.py",
+                title="Final Recommendation",
+                icon="✅",
             ),
         ],
         position="sidebar",

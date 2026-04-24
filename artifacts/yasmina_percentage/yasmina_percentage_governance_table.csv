@@ -1,0 +1,9 @@
+column_type,used_in_model,examples,why
+target,no,"inferred_remaining_cap_50_rule_pct, parsed_need_comment, parsed_need_pct",Outcome labels define the regression target and cannot be predictors.
+post_decision,no,"inferred_has_over_and_above, parsed_bin_status, parsed_decision, parsed_over_and_above_amount_awarded, parsed_over_and_above_decision",These fields are only known after committee processing and would leak the answer.
+identifier,no,"raw_source_row_number, raw_source_sheet_name",Identifiers encourage memorization rather than generalizable need estimation.
+raw_operational,no,"raw_applicant_work_status, raw_application_type, raw_bin_status, raw_cars, raw_decision","Raw operational exports are noisy, redundant, and often not deployment-safe."
+timestamp,no,parsed_submission_date,Submission timestamps can encode workflow timing instead of financial need.
+free_text_like,no,"inferred_application_type_clean, parsed_applicant_employer_name, parsed_applicant_position, parsed_certificate_ownership_clean, parsed_father_employer_name",Free-text-like columns were excluded to keep the model efficient and reproducible.
+fairness_monitored,monitored,"inferred_application_track, parsed_applicant_citizenship, parsed_level, parsed_nationality, segment_household_income_bucket",These columns are tracked for subgroup performance and bias checks.
+model_input,yes,"pre-decision financial, household, merit, and asset features",These are available before committee outcome and encode need-relevant context.

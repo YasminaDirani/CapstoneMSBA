@@ -1,0 +1,30 @@
+Yasmina Eligibility Notebook Refresh Report
+========================================================================
+
+Build profile: fast_refresh_convenience
+Purpose: quick notebook iteration, not final thesis submission artifacts.
+
+Selected model: XGBoost
+Model family: tree
+Selected threshold policy: faid_need_sensitive
+Selected threshold: 0.105
+
+Business impact summary
+------------------------------------------------------------------------
+{
+  "available": true,
+  "total_cases": 440,
+  "manual_review_baseline_cases": 440,
+  "review_cases_after_model": 259,
+  "review_reduction_vs_all_manual": 181,
+  "automated_cases": 181,
+  "automated_share": 0.4113636363636364,
+  "auto_approve_cases": 181,
+  "auto_reject_cases": 0,
+  "auto_false_approves": 16,
+  "auto_false_rejects": 0,
+  "threshold_only_false_approves": 117,
+  "threshold_only_false_rejects": 0,
+  "harmful_auto_errors_avoided_vs_threshold_only": 101,
+  "note": "The decision layer reduces harmful automatic decisions by routing uncertain or fairness-risk cases into manual review instead of forcing a binary decision on every applicant."
+}

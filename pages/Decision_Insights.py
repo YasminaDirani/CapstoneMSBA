@@ -2,18 +2,17 @@ from __future__ import annotations
 
 import altair as alt
 import html
-import json
 import numpy as np
 import pandas as pd
 import streamlit as st
-from pathlib import Path
 
 from utils.chart_insights import (
     driver_side_insights,
     feature_importance_insights,
     group_pattern_chart_insights,
 )
-from utils.data_loader import DEFAULT_DATA_PATH, load_csv
+from utils.decision_labels import normalize_decision_series
+from utils.data_loader import DEFAULT_DATA_PATH, load_csv, load_json, prepare_dashboard_dataframe
 from utils.decision_analytics import (
     GROUP_DIMENSIONS,
     build_inconsistency_review_observations,
@@ -31,6 +30,7 @@ from utils.model_explainability import (
     extract_top_feature_importances,
 )
 from utils.prediction_utils import add_prediction_probabilities
+from utils.source_paths import DEFAULT_MODEL_METADATA_PATH
 from utils.ui import (
     ACCENT_COLOR,
     BACKGROUND_COLOR,
@@ -46,6 +46,7 @@ from utils.ui import (
     apply_design_system,
     build_color_condition,
     collapse_small_categories,
+    render_decision_journey,
     render_insight_action_panel,
     render_kpi_row,
     render_page_header,
@@ -64,10 +65,6 @@ SURFACE_COLOR = BACKGROUND_COLOR
 TEXT_MUTED = MUTED_TEXT_COLOR
 TEXT_DARK = TEXT_COLOR
 NEUTRAL_PIE_COLORS = CHART_NEUTRALS
-ROOT_DIR = Path(__file__).resolve().parents[1]
-DEFAULT_MODEL_METADATA_PATH = (
-    ROOT_DIR / "artifacts" / "yasmina_eligibility" / "yasmina_eligibility_metadata.json"
-)
 FACTOR_PRIORITY_COLORS = {
     "Primary": PRIMARY_COLOR,
     "Secondary": SECONDARY_COLOR,
@@ -87,17 +84,6 @@ FACTOR_THEME_KEYWORDS = {
 def _as_dict(value: object) -> dict[str, object]:
     """Return a mapping value or an empty dict when the payload is missing."""
     return value if isinstance(value, dict) else {}
-
-
-@st.cache_data(show_spinner=False)
-def load_json(json_path: str | Path) -> dict[str, object]:
-    """Load JSON metadata from disk and cache it between reruns."""
-    path = Path(json_path)
-    if not path.is_absolute():
-        path = ROOT_DIR / path
-    with path.open("r", encoding="utf-8") as json_file:
-        payload = json.load(json_file)
-    return payload if isinstance(payload, dict) else {}
 
 
 def build_saved_feature_importance_frame(
@@ -1453,10 +1439,8 @@ def build_factor_distribution_frame(
     if frame.empty:
         return frame
 
-    frame["decision_label"] = (
-        frame["decision"].astype("string").str.strip().str.lower().map(
-            {"awarded": "Awarded", "denied": "Denied"}
-        )
+    frame["decision_label"] = normalize_decision_series(frame["decision"]).map(
+        {"awarded": "Awarded", "denied": "Denied"}
     )
     return frame.dropna(subset=["decision_label"])
 
@@ -1634,7 +1618,7 @@ def build_scored_decision_frame(scored_df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame()
 
     frame = scored_df.copy()
-    frame["decision_clean"] = frame["decision"].astype("string").str.strip().str.lower()
+    frame["decision_clean"] = normalize_decision_series(frame["decision"])
     frame["predicted_award_probability"] = pd.to_numeric(
         frame["predicted_award_probability"],
         errors="coerce",
@@ -2211,9 +2195,10 @@ if not DEFAULT_DATA_PATH.exists():
     st.error(f"CSV file not found: {DEFAULT_DATA_PATH}")
 else:
     raw_df = load_csv(DEFAULT_DATA_PATH)
+    df = prepare_dashboard_dataframe(raw_df)
 
     try:
-        labeled_df, overview = prepare_decision_analytics_frame(raw_df)
+        labeled_df, overview = prepare_decision_analytics_frame(df)
     except Exception as exc:
         st.error(f"Unable to prepare decision analytics: {exc}")
     else:
@@ -2253,7 +2238,7 @@ else:
         if DEFAULT_MODEL_PATH is not None and load_model is not None:
             try:
                 model = load_model(DEFAULT_MODEL_PATH)
-                scored_df = add_prediction_probabilities(raw_df, model)
+                scored_df = add_prediction_probabilities(df, model)
                 scored_decision_df = build_scored_decision_frame(scored_df)
                 review_candidates_df, low_confidence_awards_df, review_summary = (
                     build_review_candidate_tables(scored_df)
@@ -2404,6 +2389,7 @@ else:
         if review_pair_count > 0:
             page_pills.append((f"{review_pair_count:,} close-match reviews", "danger"))
 
+        render_decision_journey("Evidence")
         render_page_header(
             title="Decision Insights",
             description="Turns historical decision patterns into focus areas, audit triggers, and governance review priorities.",

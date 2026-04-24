@@ -1,0 +1,41 @@
+{
+  "iterations_requested": 250,
+  "iterations_used": 250,
+  "mae": {
+    "mean": 8.12259574468085,
+    "std": 0.3749286070564854,
+    "ci_95_lower": 7.413829787234042,
+    "ci_95_upper": 8.878191489361702
+  },
+  "rmse": {
+    "mean": 11.708745032306815,
+    "std": 0.4928989175262181,
+    "ci_95_lower": 10.722748766025601,
+    "ci_95_upper": 12.667756519760545
+  },
+  "r2": {
+    "mean": 0.49957745020452404,
+    "std": 0.04264696195190734,
+    "ci_95_lower": 0.41283969517442154,
+    "ci_95_upper": 0.5764315024775661
+  },
+  "mean_signed_error": {
+    "mean": 0.1594468085106383,
+    "std": 0.5490165552226599,
+    "ci_95_lower": -0.8545212765957446,
+    "ci_95_upper": 1.1805851063829793
+  },
+  "within_10_pct_points": {
+    "mean": 0.7697021276595745,
+    "std": 0.018834102162176968,
+    "ci_95_lower": 0.7340425531914894,
+    "ci_95_upper": 0.8021276595744681
+  },
+  "binary_nonzero_f1": {
+    "mean": 0.81529397631037,
+    "std": 0.015932975991369447,
+    "ci_95_lower": 0.7852460773385921,
+    "ci_95_upper": 0.8473560463662536
+  },
+  "note": "These intervals are bootstrap approximations around the held-out test metrics. Per-case prediction ranges come from the two-stage ensemble uncertainty approximation."
+}

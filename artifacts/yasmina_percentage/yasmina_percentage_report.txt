@@ -1,0 +1,175 @@
+Yasmina Financial Aid Percentage Model
+========================================
+
+Data path: /Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned.csv
+Selected model: two_stage_probability_x_amount
+Selection rationale: Two-stage model selected because the target is zero-inflated and its validation error stayed within a tight tolerance of the best alternative while enabling cleaner decision logic, uncertainty, and manual-review routing.
+
+Executive Decision Logic
+========================
+
+When we auto-decide:
+- Auto-zero only when validated stage-1 P(any aid) <= 0.05, the upper prediction bound stays <= 10.0, confidence >= 0.50, and interval width <= 18.0.
+- Auto-award only when validated stage-1 P(any aid) >= 0.75, predicted aid is positive, confidence >= 0.50, and interval width <= 18.0.
+
+When we review:
+- Any case in a fairness manual-review subgroup goes to committee review.
+- Any low-confidence, high-uncertainty, or middle-probability case goes to review.
+- Moderately risky subgroups keep automation only under tighter thresholds (Moderately risky subgroups keep automation available, but only under stricter probability, confidence, and uncertainty thresholds.).
+
+Errors that matter most:
+- Harmful auto-zero: the model says no aid but the student actually received nonzero aid.
+- Harmful auto-award: an automated award misses by more than 10.0 percentage points.
+- Severe auto-award: an automated award misses by more than 20.0 points.
+
+Why these thresholds:
+- Error limits are tied to the historical 5.0-point award grid.
+- Fairness gaps trigger at MAE +2.50, bias 5.00, or rate-gap 0.14, using validation dispersion rather than arbitrary fixed cutoffs.
+- Probability thresholds were chosen by validation search; selected policy rank: 1.
+- Calibration check: A bin near 0.80 predicted probability averaged 0.75 predicted vs 0.76 observed nonzero aid.
+- Temporal holdout trained on [2025], tuned on [2026], and tested on [2027] with MAE 5.54 and R2 0.568.
+
+Current held-out result:
+- Auto-zero 37, auto-award 8, review 425.
+- Harmful auto-zero 0, harmful auto-award 1, severe auto-award 0.
+
+Problem framing:
+- Compared constant baselines, a transparent rule baseline, tiered prediction, direct regression, and a two-stage model.
+- Final recommendation uses a binary any-aid stage plus a positive-percentage stage because the target is zero-inflated and the structure supports cleaner review logic and uncertainty handling.
+
+Leakage policy:
+- Post-decision columns excluded: 9
+- Raw operational columns excluded: 15
+- Text-like columns excluded: 19
+- Final model features retained: 120
+
+Validation candidate comparison (sorted by MAE):
+                    model_name                   model_family     mae    rmse      r2  binary_nonzero_f1
+two_stage_probability_x_amount two_stage_probability_x_amount  7.3987 10.5297  0.5636             0.8248
+                direct_rf_snap              direct_regression  7.4627 10.7551  0.5447             0.8137
+                     tiered_rf              tiered_classifier  7.5160 12.7109  0.3641             0.8408
+              simple_rule_tree             baseline_rule_tree 11.8550 14.8374  0.1335             0.7703
+               median_baseline              baseline_constant 13.2409 15.9657 -0.0033             0.7426
+                 mean_baseline              baseline_constant 13.3279 15.9504 -0.0014             0.7426
+
+Test candidate comparison (sorted by MAE):
+                    model_name     mae    rmse      r2  mae_improvement_vs_mean_pct  mae_improvement_vs_median_pct  mae_improvement_vs_rule_pct
+                     tiered_rf  7.8936 13.9452  0.2951                      41.4335                        40.8293                      33.5125
+                direct_rf_snap  8.0426 11.7871  0.4964                      40.3284                        39.7129                      32.2581
+two_stage_probability_x_amount  8.1383 11.7396  0.5004                      39.6181                        38.9952                      31.4516
+              simple_rule_tree 11.8723 15.5331  0.1254                      11.9134                        11.0048                       0.0000
+               median_baseline 13.3404 16.6408 -0.0038                       1.0210                         0.0000                     -12.3656
+                 mean_baseline 13.4780 16.6138 -0.0005                       0.0000                        -1.0315                     -13.5247
+
+Final test metrics:
+- MAE: 8.138
+- RMSE: 11.740
+- R2: 0.500
+- Mean signed error: 0.138
+- Overprediction rate: 33.191%
+- Underprediction rate: 37.872%
+- P90 absolute error: 20.000
+- Max absolute error: 50.000
+- Within 10 pct points: 77.021%
+
+Metric uncertainty (95% bootstrap intervals):
+- MAE: 7.414 to 8.878
+- RMSE: 10.723 to 12.668
+- R2: 0.413 to 0.576
+
+Threshold rationale:
+- Validation decision-policy rank: 1
+- Error policy: Historical award percentages move on an approximately 5.0-point grid, so a 10.0-point miss equals about two historical award steps and a 20.0-point miss equals about four steps.
+- Fairness policy: Fairness thresholds use the larger of a support-step-based minimum and the 75th percentile of validation subgroup dispersion so the policy reacts to real portfolio variability without becoming hypersensitive to noise.
+- Fairness thresholds: MAE gap 2.500, bias gap 5.000, rate gap 0.143
+
+Decision policy:
+- Auto-zero probability max: 0.05
+- Auto-award probability min: 0.75
+- Max interval width: 18.0
+- Min confidence: 0.50
+- Zero upper-bound cap: 10.0
+- Harmful auto-award threshold: 10.0
+- Severe auto-award threshold: 20.0
+- Auto-zero cases on test: 37
+- Auto-award cases on test: 8
+- Review cases on test: 425
+- Harmful auto-zero errors on test: 0
+- Harmful auto-award errors on test: 1
+- Fairness tightened-threshold cases on test: 238
+
+Fairness monitoring:
+- Validation flagged groups: 1
+- Validation tightened-threshold groups: 4
+- Test flagged groups: 1
+- Test tightened-threshold groups: 1
+
+Probability calibration:
+- Selected stage-1 mode: uncalibrated
+- Validation Brier: 0.1283
+- Validation ECE: 0.0401
+- Validation 0.80 check: 0.752 predicted vs 0.764 observed.
+- Test Brier: 0.1481
+- Test ECE: 0.0388
+- Test 0.80 check: 0.760 predicted vs 0.768 observed.
+
+Temporal validation:
+- Train cycles: [2025]
+- Validation cycles: [2026]
+- Test cycles: [2027]
+- Temporal MAE: 5.538
+- Temporal RMSE: 8.139
+- Temporal R2: 0.568
+- Temporal harmful auto-zero: 0
+- Temporal harmful auto-award: 0
+
+Global explainability:
+Stage 1 (any aid) top SHAP drivers:
+                                     feature  importance                      source
+               parsed_father_income_document      0.2277 feature_importance_fallback
+            qa_risk_categories_business_rule      0.0781 feature_importance_fallback
+           derived_parent_gross_income_total      0.0609 feature_importance_fallback
+               parsed_mother_income_document      0.0579 feature_importance_fallback
+     parsed_properties_total_estimated_value      0.0331 feature_importance_fallback
+parsed_father_annual_income_from_work_status      0.0316 feature_importance_fallback
+                parsed_properties_total_area      0.0275 feature_importance_fallback
+         parsed_siblings_other_total_tuition      0.0274 feature_importance_fallback
+              derived_household_income_total      0.0249 feature_importance_fallback
+                     parsed_properties_count      0.0223 feature_importance_fallback
+
+Stage 2 (positive amount) top SHAP drivers:
+                                     feature  importance                      source
+               parsed_father_income_document      0.1364 feature_importance_fallback
+inferred_application_track_sophomore_regular      0.0984 feature_importance_fallback
+                     derived_submission_year      0.0461 feature_importance_fallback
+               parsed_mother_income_document      0.0439 feature_importance_fallback
+                parsed_nationality_Palestine      0.0392 feature_importance_fallback
+                     parsed_application_term      0.0322 feature_importance_fallback
+         parsed_siblings_other_total_tuition      0.0277 feature_importance_fallback
+                parsed_properties_total_area      0.0238 feature_importance_fallback
+                              qa_issue_count      0.0213 feature_importance_fallback
+     parsed_properties_total_estimated_value      0.0204 feature_importance_fallback
+
+Simple rule baseline:
+|--- derived_parent_gross_income_total <= 18390.00
+|   |--- parsed_properties_total_estimated_value <= 356350.00
+|   |   |--- parsed_merit_pct <= 27.50
+|   |   |   |--- value: [14.04]
+|   |   |--- parsed_merit_pct >  27.50
+|   |   |   |--- value: [21.58]
+|   |--- parsed_properties_total_estimated_value >  356350.00
+|   |   |--- parsed_dependents_count <= 0.50
+|   |   |   |--- value: [14.88]
+|   |   |--- parsed_dependents_count >  0.50
+|   |   |   |--- value: [9.64]
+|--- derived_parent_gross_income_total >  18390.00
+|   |--- derived_parent_gross_income_total <= 63473.00
+|   |   |--- derived_parent_gross_income_total <= 34990.00
+|   |   |   |--- value: [10.44]
+|   |   |--- derived_parent_gross_income_total >  34990.00
+|   |   |   |--- value: [5.97]
+|   |--- derived_parent_gross_income_total >  63473.00
+|   |   |--- derived_household_income_total <= 96500.00
+|   |   |   |--- value: [2.26]
+|   |   |--- derived_household_income_total >  96500.00
+|   |   |   |--- value: [0.59]

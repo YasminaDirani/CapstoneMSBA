@@ -4,3 +4,4 @@ numpy==2.4.4
 altair==5.5.0
 scikit-learn==1.8.0
 joblib==1.5.3
+xgboost==3.2.0

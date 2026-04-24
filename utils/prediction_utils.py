@@ -4,6 +4,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from utils.model_artifact import resolve_prediction_estimator, resolve_selected_threshold
+
 
 TARGET_COLUMN = "decision"
 LEAKAGE_COLUMNS = {
@@ -17,34 +19,75 @@ LEAKAGE_COLUMNS = {
     "over_and_above_decision",
     "over_and_above_percentage_awarded",
     "has_over_and_above",
+    "raw_decision",
+    "raw_bin_status",
+    "parsed_decision",
+    "parsed_bin_status",
+    "parsed_need_pct",
+    "parsed_need_comment",
+    "parsed_merit_pct",
+    "parsed_merit_hist_pct",
+    "parsed_merit_comment",
+    "parsed_over_and_above_decision",
+    "parsed_over_and_above_amount_awarded",
+    "parsed_over_and_above_percentage_awarded",
+    "inferred_has_over_and_above",
 }
 
 
-def prepare_scoring_features(dataframe: pd.DataFrame) -> pd.DataFrame:
+def prepare_scoring_features(
+    dataframe: pd.DataFrame,
+    *,
+    model: Any | None = None,
+) -> pd.DataFrame:
     """Prepare dataset features for inference using the training logic when available."""
+    estimator = resolve_prediction_estimator(model) if model is not None else None
+    expected_columns = getattr(estimator, "feature_names_in_", None)
+    if expected_columns is not None:
+        return dataframe.reindex(columns=list(expected_columns)).copy()
+
     try:
-        from yasmina_eligibility_model import (
+        from faid_models.eligibility.modeling.yasmina_eligibility_model import (
             LEAKAGE_COLUMNS as MODEL_LEAKAGE_COLUMNS,
             TARGET_COLUMN as MODEL_TARGET_COLUMN,
             build_domain_features,
             select_feature_frame,
         )
     except Exception:
+        try:
+            from yasmina_eligibility_model import (
+                LEAKAGE_COLUMNS as MODEL_LEAKAGE_COLUMNS,
+                TARGET_COLUMN as MODEL_TARGET_COLUMN,
+                build_domain_features,
+                select_feature_frame,
+            )
+        except Exception:
+            features = dataframe.drop(columns=sorted(LEAKAGE_COLUMNS), errors="ignore").copy()
+            return features
+
+    try:
+        features, _ = select_feature_frame(
+            dataframe,
+            target_column=MODEL_TARGET_COLUMN,
+            leakage_columns=MODEL_LEAKAGE_COLUMNS,
+        )
+    except TypeError:
+        features, _ = select_feature_frame(dataframe, target_column=MODEL_TARGET_COLUMN)
+    except Exception:
         features = dataframe.drop(columns=sorted(LEAKAGE_COLUMNS), errors="ignore").copy()
         return features
 
-    features, _ = select_feature_frame(
-        dataframe,
-        target_column=MODEL_TARGET_COLUMN,
-        leakage_columns=MODEL_LEAKAGE_COLUMNS,
-    )
     return build_domain_features(features)
 
 
 def get_positive_class_probabilities(model: Any, features: pd.DataFrame) -> np.ndarray:
     """Extract positive-class probabilities from a compatible binary classifier."""
-    if hasattr(model, "predict_proba"):
-        probabilities = np.asarray(model.predict_proba(features), dtype=float)
+    estimator = resolve_prediction_estimator(model)
+    if estimator is None:
+        raise AttributeError("The loaded model artifact does not contain a scoring estimator.")
+
+    if hasattr(estimator, "predict_proba"):
+        probabilities = np.asarray(estimator.predict_proba(features), dtype=float)
         if probabilities.ndim == 1:
             return probabilities
 
@@ -52,7 +95,7 @@ def get_positive_class_probabilities(model: Any, features: pd.DataFrame) -> np.n
             return probabilities[:, 0]
 
         positive_index = 1
-        model_classes = getattr(model, "classes_", None)
+        model_classes = getattr(estimator, "classes_", None)
         if model_classes is not None:
             classes_list = list(model_classes)
             normalized_classes = [str(value).strip().lower() for value in classes_list]
@@ -64,8 +107,8 @@ def get_positive_class_probabilities(model: Any, features: pd.DataFrame) -> np.n
 
         return probabilities[:, positive_index]
 
-    if hasattr(model, "decision_function"):
-        decision_scores = np.asarray(model.decision_function(features), dtype=float)
+    if hasattr(estimator, "decision_function"):
+        decision_scores = np.asarray(estimator.decision_function(features), dtype=float)
         return 1.0 / (1.0 + np.exp(-decision_scores))
 
     raise AttributeError("The loaded model does not expose predict_proba or decision_function.")
@@ -73,15 +116,26 @@ def get_positive_class_probabilities(model: Any, features: pd.DataFrame) -> np.n
 
 def add_prediction_probabilities(dataframe: pd.DataFrame, model: Any) -> pd.DataFrame:
     """Return a copy of the dataset with predicted award probabilities attached."""
-    features = prepare_scoring_features(dataframe)
-    expected_columns = getattr(model, "feature_names_in_", None)
+    estimator = resolve_prediction_estimator(model)
+    if estimator is None:
+        raise AttributeError("The loaded model artifact does not contain a scoring estimator.")
+
+    features = prepare_scoring_features(dataframe, model=model)
+    expected_columns = getattr(estimator, "feature_names_in_", None)
     if expected_columns is not None:
         features = features.reindex(columns=list(expected_columns))
 
     probabilities = get_positive_class_probabilities(model, features)
+    selected_threshold = resolve_selected_threshold(model, default=0.50)
     scored_df = dataframe.copy()
     scored_df["predicted_award_probability"] = probabilities
     scored_df["predicted_award_percentage"] = probabilities * 100.0
+    scored_df["predicted_award_label"] = np.where(
+        probabilities >= selected_threshold,
+        "Awarded",
+        "Denied",
+    )
+    scored_df["prediction_threshold_used"] = selected_threshold
     return scored_df
 
 
@@ -161,7 +215,7 @@ def build_confusion_matrix_data(
     target_column: str = TARGET_COLUMN,
     probability_column: str = "predicted_award_probability",
     positive_label: str = "awarded",
-    threshold: float = 0.5,
+    threshold: float | None = None,
 ) -> tuple[pd.DataFrame, dict[str, int]]:
     """Build confusion-matrix cell counts from labeled rows and predicted probabilities."""
     if target_column not in dataframe.columns:
@@ -192,7 +246,18 @@ def build_confusion_matrix_data(
             "Confusion matrix requires both positive and negative labeled examples."
         )
 
-    predicted_positive = (probabilities >= threshold).astype(int)
+    resolved_threshold = threshold
+    if resolved_threshold is None and "prediction_threshold_used" in labeled_df.columns:
+        threshold_series = pd.to_numeric(
+            labeled_df["prediction_threshold_used"],
+            errors="coerce",
+        ).dropna()
+        if not threshold_series.empty:
+            resolved_threshold = float(threshold_series.iloc[0])
+    if resolved_threshold is None:
+        resolved_threshold = 0.50
+
+    predicted_positive = (probabilities >= float(resolved_threshold)).astype(int)
 
     true_negative = int(((binary_target == 0) & (predicted_positive == 0)).sum())
     false_positive = int(((binary_target == 0) & (predicted_positive == 1)).sum())

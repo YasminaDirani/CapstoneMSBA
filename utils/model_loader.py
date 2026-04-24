@@ -5,19 +5,22 @@ from typing import Any
 import joblib
 import streamlit as st
 
+from utils.source_paths import (
+    DEFAULT_MODEL_PATH as RESOLVED_DEFAULT_MODEL_PATH,
+    ROOT_DIR,
+)
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL_PATH = Path(
     os.environ.get(
         "YASMINA_MODEL_PATH",
-        ROOT_DIR / "artifacts" / "yasmina_eligibility" / "yasmina_eligibility_pipeline.joblib",
+        RESOLVED_DEFAULT_MODEL_PATH,
     )
 )
 
 
 @st.cache_resource(show_spinner=False)
 def load_model(model_path: str | Path = DEFAULT_MODEL_PATH) -> Any:
-    """Load a trained model from disk with joblib and cache the resource."""
+    """Load a trained model or model bundle from disk with joblib and cache the resource."""
     path = Path(model_path)
     if not path.is_absolute():
         path = ROOT_DIR / path

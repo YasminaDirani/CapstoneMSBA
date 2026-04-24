@@ -1,0 +1,130 @@
+{
+  "validation": {
+    "available": true,
+    "selected_mode": "uncalibrated",
+    "selection_reason": "Validation calibration checks showed that the raw probabilities were already stronger, so the final model keeps the uncalibrated stage-1 probabilities.",
+    "uncalibrated": {
+      "available": true,
+      "sample_size": 469,
+      "brier_score": 0.12830119799786394,
+      "roc_auc": 0.8893464199759326,
+      "average_precision": 0.9069058802943535,
+      "log_loss": 0.4048086863687501,
+      "expected_calibration_error": 0.04007568181482569,
+      "max_calibration_gap": 0.15952917913220782,
+      "reference_probability_check": {
+        "available": true,
+        "reference_probability": 0.8,
+        "bin_label": "[0.7, 0.8]",
+        "sample_size": 72,
+        "mean_predicted_probability": 0.7516294563933522,
+        "empirical_nonzero_rate": 0.7638888888888888,
+        "calibration_gap": -0.012259432495536626
+      }
+    },
+    "calibrated": {
+      "available": true,
+      "sample_size": 469,
+      "brier_score": 0.1289971782866417,
+      "roc_auc": 0.8868080625752105,
+      "average_precision": 0.9017480309378278,
+      "log_loss": 0.41226638268465104,
+      "expected_calibration_error": 0.04107504303675414,
+      "max_calibration_gap": 0.11678115249287713,
+      "reference_probability_check": {
+        "available": true,
+        "reference_probability": 0.8,
+        "bin_label": "[0.7, 0.8]",
+        "sample_size": 67,
+        "mean_predicted_probability": 0.75622847392419,
+        "empirical_nonzero_rate": 0.7761194029850746,
+        "calibration_gap": -0.019890929060884632
+      }
+    },
+    "brier_improvement": -0.0006959802887777644,
+    "ece_improvement": -0.000999361221928452,
+    "selected_metrics": {
+      "available": true,
+      "sample_size": 469,
+      "brier_score": 0.12830119799786394,
+      "roc_auc": 0.8893464199759326,
+      "average_precision": 0.9069058802943535,
+      "log_loss": 0.4048086863687501,
+      "expected_calibration_error": 0.04007568181482569,
+      "max_calibration_gap": 0.15952917913220782,
+      "reference_probability_check": {
+        "available": true,
+        "reference_probability": 0.8,
+        "bin_label": "[0.7, 0.8]",
+        "sample_size": 72,
+        "mean_predicted_probability": 0.7516294563933522,
+        "empirical_nonzero_rate": 0.7638888888888888,
+        "calibration_gap": -0.012259432495536626
+      }
+    }
+  },
+  "test": {
+    "available": true,
+    "selected_mode": "uncalibrated",
+    "selection_reason": "Validation calibration checks showed that the raw probabilities were already stronger, so the final model keeps the uncalibrated stage-1 probabilities.",
+    "uncalibrated": {
+      "available": true,
+      "sample_size": 470,
+      "brier_score": 0.14808554227891954,
+      "roc_auc": 0.852162020383693,
+      "average_precision": 0.8639115173389287,
+      "log_loss": 0.457200392904742,
+      "expected_calibration_error": 0.03875824123201146,
+      "max_calibration_gap": 0.20365122607349018,
+      "reference_probability_check": {
+        "available": true,
+        "reference_probability": 0.8,
+        "bin_label": "[0.7, 0.8]",
+        "sample_size": 69,
+        "mean_predicted_probability": 0.7595635042523807,
+        "empirical_nonzero_rate": 0.7681159420289855,
+        "calibration_gap": -0.008552437776604749
+      }
+    },
+    "calibrated": {
+      "available": true,
+      "sample_size": 470,
+      "brier_score": 0.14904534256946084,
+      "roc_auc": 0.8538481714628298,
+      "average_precision": 0.8677424839663938,
+      "log_loss": 0.45821862384669426,
+      "expected_calibration_error": 0.06533580816881077,
+      "max_calibration_gap": 0.21986351686412908,
+      "reference_probability_check": {
+        "available": true,
+        "reference_probability": 0.8,
+        "bin_label": "[0.7, 0.8]",
+        "sample_size": 46,
+        "mean_predicted_probability": 0.7527300171692887,
+        "empirical_nonzero_rate": 0.717391304347826,
+        "calibration_gap": 0.035338712821462614
+      }
+    },
+    "brier_improvement": -0.0009598002905412961,
+    "ece_improvement": -0.02657756693679931,
+    "selected_metrics": {
+      "available": true,
+      "sample_size": 470,
+      "brier_score": 0.14808554227891954,
+      "roc_auc": 0.852162020383693,
+      "average_precision": 0.8639115173389287,
+      "log_loss": 0.457200392904742,
+      "expected_calibration_error": 0.03875824123201146,
+      "max_calibration_gap": 0.20365122607349018,
+      "reference_probability_check": {
+        "available": true,
+        "reference_probability": 0.8,
+        "bin_label": "[0.7, 0.8]",
+        "sample_size": 69,
+        "mean_predicted_probability": 0.7595635042523807,
+        "empirical_nonzero_rate": 0.7681159420289855,
+        "calibration_gap": -0.008552437776604749
+      }
+    }
+  }
+}

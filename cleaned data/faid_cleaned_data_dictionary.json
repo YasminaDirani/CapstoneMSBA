@@ -1,0 +1,1748 @@
+{
+  "generated_at_utc": "2026-04-23T19:05:21.868763+00:00",
+  "confidence_scoring": {
+    "kind": "rule_based_operational_confidence",
+    "note": "Confidence scores are rule-based operational signals, not statistically calibrated probabilities.",
+    "penalties": {
+      "parsed_with_nssf_note": 0.1,
+      "non_direct_parser_status": 0.2,
+      "review_flag": 0.2,
+      "mixed_currency": 0.35,
+      "likely_lbp_unmarked": 0.2,
+      "unknown_currency_without_signal": 0.05,
+      "categorical_inferred": 0.35
+    },
+    "hard_failures": {
+      "missing_raw_text": "confidence becomes 0.0",
+      "missing_numeric_value": "confidence becomes 0.0",
+      "explicit_hard_fail": "confidence becomes 0.0"
+    }
+  },
+  "tables": {
+    "cleaned": {
+      "column_count": 172,
+      "columns": [
+        {
+          "export_field_name": "raw_source_sheet_name",
+          "internal_field_name": "source_sheet_name",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for source sheet name.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_source_row_number",
+          "internal_field_name": "source_row_number",
+          "group": "raw",
+          "inferred_type": "int",
+          "description": "Raw preserved source text or provenance for source row number.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_application_type",
+          "internal_field_name": "application_type_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for application type.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_father_work_status",
+          "internal_field_name": "father_work_status_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for father work status.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_mother_work_status",
+          "internal_field_name": "mother_work_status_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for mother work status.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_applicant_work_status",
+          "internal_field_name": "applicant_work_status_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for applicant work status.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_spouse_work_status",
+          "internal_field_name": "spouse_work_status_raw",
+          "group": "raw",
+          "inferred_type": "null",
+          "description": "Raw preserved source text or provenance for spouse work status.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_father_income_document",
+          "internal_field_name": "father_income_document_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for father income document.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_mother_income_document",
+          "internal_field_name": "mother_income_document_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for mother income document.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_financial_assistants",
+          "internal_field_name": "financial_assistants_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for financial assistants.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_loans",
+          "internal_field_name": "loans_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for loans.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_properties",
+          "internal_field_name": "properties_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for properties.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_cars",
+          "internal_field_name": "cars_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for cars.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_decision",
+          "internal_field_name": "decision_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for decision.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_bin_status",
+          "internal_field_name": "bin_status_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for bin status.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_over_and_above_decision",
+          "internal_field_name": "over_and_above_decision_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for over and above decision.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_application_type_clean",
+          "internal_field_name": "application_type_clean",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for application type clean.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_application_track",
+          "internal_field_name": "application_track",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for application track.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_application_type_inferred_flag",
+          "internal_field_name": "application_type_inferred_flag",
+          "group": "inferred",
+          "inferred_type": "int",
+          "description": "Derived or inferred value for application type inferred flag.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_application_has_early_merit",
+          "internal_field_name": "application_has_early_merit",
+          "group": "inferred",
+          "inferred_type": "int",
+          "description": "Derived or inferred value for application has early merit.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_application_type_inconsistent_flag",
+          "internal_field_name": "application_type_inconsistent_flag",
+          "group": "inferred",
+          "inferred_type": "int",
+          "description": "Derived or inferred value for application type inconsistent flag.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_remaining_cap_50_rule_pct",
+          "internal_field_name": "remaining_cap_50_rule_pct",
+          "group": "inferred",
+          "inferred_type": "float",
+          "description": "Derived or inferred value for remaining cap 50 rule pct.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_level",
+          "internal_field_name": "level",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for level.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_application_term",
+          "internal_field_name": "application_term",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for application term.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_nationality",
+          "internal_field_name": "nationality",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for nationality.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_citizenship",
+          "internal_field_name": "applicant_citizenship",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant citizenship.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_marital_status",
+          "internal_field_name": "applicant_marital_status",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant marital status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_plan_to_reside",
+          "internal_field_name": "applicant_plan_to_reside",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant plan to reside.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_status",
+          "internal_field_name": "father_status",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_is_employed",
+          "internal_field_name": "father_is_employed",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for father is employed.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_employment_sector",
+          "internal_field_name": "father_employment_sector",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father employment sector.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_position",
+          "internal_field_name": "father_position",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father position.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_employer_name",
+          "internal_field_name": "father_employer_name",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father employer name.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_annual_income_from_work_status",
+          "internal_field_name": "father_annual_income_from_work_status",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for father annual income from work status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_father_work_income_confidence"
+        },
+        {
+          "export_field_name": "parsed_father_annual_income_currency_signal",
+          "internal_field_name": "father_annual_income_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father annual income currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_father_annual_income_currency_guess",
+          "internal_field_name": "father_annual_income_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for father annual income currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_work_status_benefits_total",
+          "internal_field_name": "father_work_status_benefits_total",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for father work status benefits total.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_self_employed_name",
+          "internal_field_name": "father_self_employed_name",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father self employed name.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_gross_income",
+          "internal_field_name": "father_gross_income",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for father gross income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_net_income",
+          "internal_field_name": "father_net_income",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for father net income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_ever_worked",
+          "internal_field_name": "father_ever_worked",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father ever worked.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_unemployment_date",
+          "internal_field_name": "father_unemployment_date",
+          "group": "parsed",
+          "inferred_type": "date",
+          "description": "Parsed or standardized value for father unemployment date.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_second_occupation_flag",
+          "internal_field_name": "father_second_occupation_flag",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for father second occupation flag.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_job_info_clean",
+          "internal_field_name": "father_job_info_clean",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father job info clean.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_job_info_category",
+          "internal_field_name": "father_job_info_category",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father job info category.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_income_document",
+          "internal_field_name": "father_income_document",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for father income document.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_father_income_document_confidence"
+        },
+        {
+          "export_field_name": "qa_father_income_document_status",
+          "internal_field_name": "father_income_document_status",
+          "group": "qa",
+          "inferred_type": "string",
+          "description": "QA signal or confidence metric for father income document status.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_father_income_document_review_flag",
+          "internal_field_name": "father_income_document_review_flag",
+          "group": "qa",
+          "inferred_type": "int",
+          "description": "QA signal or confidence metric for father income document review flag.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_father_income_document_currency_signal",
+          "internal_field_name": "father_income_document_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for father income document currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_father_income_document_currency_guess",
+          "internal_field_name": "father_income_document_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for father income document currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_status",
+          "internal_field_name": "mother_status",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_is_employed",
+          "internal_field_name": "mother_is_employed",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for mother is employed.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_employment_sector",
+          "internal_field_name": "mother_employment_sector",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother employment sector.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_position",
+          "internal_field_name": "mother_position",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother position.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_employer_name",
+          "internal_field_name": "mother_employer_name",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother employer name.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_annual_income_from_work_status",
+          "internal_field_name": "mother_annual_income_from_work_status",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for mother annual income from work status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_mother_work_income_confidence"
+        },
+        {
+          "export_field_name": "parsed_mother_annual_income_currency_signal",
+          "internal_field_name": "mother_annual_income_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother annual income currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_mother_annual_income_currency_guess",
+          "internal_field_name": "mother_annual_income_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for mother annual income currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_work_status_benefits_total",
+          "internal_field_name": "mother_work_status_benefits_total",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for mother work status benefits total.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_self_employed_name",
+          "internal_field_name": "mother_self_employed_name",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother self employed name.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_gross_income",
+          "internal_field_name": "mother_gross_income",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for mother gross income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_net_income",
+          "internal_field_name": "mother_net_income",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for mother net income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_ever_worked",
+          "internal_field_name": "mother_ever_worked",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother ever worked.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_unemployment_date",
+          "internal_field_name": "mother_unemployment_date",
+          "group": "parsed",
+          "inferred_type": "date",
+          "description": "Parsed or standardized value for mother unemployment date.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_second_occupation_flag",
+          "internal_field_name": "mother_second_occupation_flag",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for mother second occupation flag.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_job_info_clean",
+          "internal_field_name": "mother_job_info_clean",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother job info clean.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_job_info_category",
+          "internal_field_name": "mother_job_info_category",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother job info category.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_income_document",
+          "internal_field_name": "mother_income_document",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for mother income document.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_mother_income_document_confidence"
+        },
+        {
+          "export_field_name": "qa_mother_income_document_status",
+          "internal_field_name": "mother_income_document_status",
+          "group": "qa",
+          "inferred_type": "string",
+          "description": "QA signal or confidence metric for mother income document status.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_mother_income_document_review_flag",
+          "internal_field_name": "mother_income_document_review_flag",
+          "group": "qa",
+          "inferred_type": "int",
+          "description": "QA signal or confidence metric for mother income document review flag.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_mother_income_document_currency_signal",
+          "internal_field_name": "mother_income_document_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for mother income document currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_mother_income_document_currency_guess",
+          "internal_field_name": "mother_income_document_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for mother income document currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_siblings_at_aub_count",
+          "internal_field_name": "siblings_at_aub_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for siblings at aub count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_siblings_not_at_aub_count",
+          "internal_field_name": "siblings_not_at_aub_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for siblings not at aub count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_siblings_other_total_tuition",
+          "internal_field_name": "siblings_other_total_tuition",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for siblings other total tuition.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_siblings_other_total_financial_assistance",
+          "internal_field_name": "siblings_other_total_financial_assistance",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for siblings other total financial assistance.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_source_of_income_type",
+          "internal_field_name": "source_of_income_type",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for source of income type.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_source_of_income_work_status",
+          "internal_field_name": "source_of_income_work_status",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for source of income work status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_source_of_income_has_record",
+          "internal_field_name": "source_of_income_has_record",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for source of income has record.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_dependents_count",
+          "internal_field_name": "dependents_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for dependents count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_investments_count",
+          "internal_field_name": "investments_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for investments count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_investments_total_annual_profit",
+          "internal_field_name": "investments_total_annual_profit",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for investments total annual profit.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_financial_assistants_count",
+          "internal_field_name": "financial_assistants_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for financial assistants count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_financial_assistants_total_est_annual_amount",
+          "internal_field_name": "financial_assistants_total_est_annual_amount",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for financial assistants total est annual amount.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_financial_assistants_amount_confidence"
+        },
+        {
+          "export_field_name": "parsed_financial_assistants_currency_signal",
+          "internal_field_name": "financial_assistants_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for financial assistants currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_financial_assistants_currency_guess",
+          "internal_field_name": "financial_assistants_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for financial assistants currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_special_family_circumstances_category",
+          "internal_field_name": "special_family_circumstances_category",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for special family circumstances category.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_special_family_circumstances_detail",
+          "internal_field_name": "special_family_circumstances_detail",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for special family circumstances detail.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_loans_count",
+          "internal_field_name": "loans_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for loans count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_loans_total_amount",
+          "internal_field_name": "loans_total_amount",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for loans total amount.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_loans_total_amount_confidence"
+        },
+        {
+          "export_field_name": "parsed_loans_total_amount_currency_signal",
+          "internal_field_name": "loans_total_amount_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for loans total amount currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_loans_total_amount_currency_guess",
+          "internal_field_name": "loans_total_amount_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for loans total amount currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_loans_total_monthly_payment",
+          "internal_field_name": "loans_total_monthly_payment",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for loans total monthly payment.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_loans_monthly_payment_confidence"
+        },
+        {
+          "export_field_name": "parsed_loans_total_remaining_balance",
+          "internal_field_name": "loans_total_remaining_balance",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for loans total remaining balance.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_loans_remaining_balance_confidence"
+        },
+        {
+          "export_field_name": "parsed_loans_max_remaining_years",
+          "internal_field_name": "loans_max_remaining_years",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for loans max remaining years.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_properties_count",
+          "internal_field_name": "properties_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for properties count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_property_types",
+          "internal_field_name": "property_types",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for property types.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_properties_total_area",
+          "internal_field_name": "properties_total_area",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for properties total area.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_properties_total_estimated_value",
+          "internal_field_name": "properties_total_estimated_value",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for properties total estimated value.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_properties_total_estimated_value_confidence"
+        },
+        {
+          "export_field_name": "parsed_properties_total_estimated_value_currency_signal",
+          "internal_field_name": "properties_total_estimated_value_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for properties total estimated value currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_properties_total_estimated_value_currency_guess",
+          "internal_field_name": "properties_total_estimated_value_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for properties total estimated value currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_properties_mortgaged_count",
+          "internal_field_name": "properties_mortgaged_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for properties mortgaged count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_properties_rented_income_total",
+          "internal_field_name": "properties_rented_income_total",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for properties rented income total.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_properties_planted_income_total",
+          "internal_field_name": "properties_planted_income_total",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for properties planted income total.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_cars_count",
+          "internal_field_name": "cars_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for cars count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_car_models",
+          "internal_field_name": "car_models",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for car models.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_cars_mortgaged_count",
+          "internal_field_name": "cars_mortgaged_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for cars mortgaged count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_travel_records_clean",
+          "internal_field_name": "travel_records_clean",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for travel records clean.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_travel_records_category",
+          "internal_field_name": "travel_records_category",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for travel records category.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_travel_records_missing_flag",
+          "internal_field_name": "travel_records_missing_flag",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for travel records missing flag.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_certificate_ownership_clean",
+          "internal_field_name": "certificate_ownership_clean",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for certificate ownership clean.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_certificate_ownership_status",
+          "internal_field_name": "certificate_ownership_status",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for certificate ownership status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_status",
+          "internal_field_name": "applicant_status",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_is_employed",
+          "internal_field_name": "applicant_is_employed",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for applicant is employed.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_employment_sector",
+          "internal_field_name": "applicant_employment_sector",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant employment sector.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_position",
+          "internal_field_name": "applicant_position",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant position.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_employer_name",
+          "internal_field_name": "applicant_employer_name",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant employer name.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_annual_income",
+          "internal_field_name": "applicant_annual_income",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for applicant annual income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_applicant_income_confidence"
+        },
+        {
+          "export_field_name": "parsed_applicant_annual_income_currency_signal",
+          "internal_field_name": "applicant_annual_income_currency_signal",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for applicant annual income currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_applicant_annual_income_currency_guess",
+          "internal_field_name": "applicant_annual_income_currency_guess",
+          "group": "inferred",
+          "inferred_type": "string",
+          "description": "Derived or inferred value for applicant annual income currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_gross_income",
+          "internal_field_name": "applicant_gross_income",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for applicant gross income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_net_income",
+          "internal_field_name": "applicant_net_income",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for applicant net income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_applicant_second_occupation_flag",
+          "internal_field_name": "applicant_second_occupation_flag",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for applicant second occupation flag.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_citizenship",
+          "internal_field_name": "spouse_citizenship",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for spouse citizenship.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_marital_status",
+          "internal_field_name": "spouse_marital_status",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse marital status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_plan_to_reside",
+          "internal_field_name": "spouse_plan_to_reside",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse plan to reside.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_status",
+          "internal_field_name": "spouse_status",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_is_employed",
+          "internal_field_name": "spouse_is_employed",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for spouse is employed.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_employment_sector",
+          "internal_field_name": "spouse_employment_sector",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse employment sector.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_position",
+          "internal_field_name": "spouse_position",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse position.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_employer_name",
+          "internal_field_name": "spouse_employer_name",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse employer name.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_spouse_annual_income",
+          "internal_field_name": "spouse_annual_income",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse annual income.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_spouse_income_confidence"
+        },
+        {
+          "export_field_name": "parsed_spouse_annual_income_currency_signal",
+          "internal_field_name": "spouse_annual_income_currency_signal",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for spouse annual income currency signal.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_spouse_annual_income_currency_guess",
+          "internal_field_name": "spouse_annual_income_currency_guess",
+          "group": "inferred",
+          "inferred_type": "null",
+          "description": "Derived or inferred value for spouse annual income currency guess.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_decision",
+          "internal_field_name": "decision",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for decision.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_over_and_above_decision",
+          "internal_field_name": "over_and_above_decision",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for over and above decision.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_over_and_above_amount_awarded",
+          "internal_field_name": "over_and_above_amount_awarded",
+          "group": "parsed",
+          "inferred_type": "null",
+          "description": "Parsed or standardized value for over and above amount awarded.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_over_and_above_percentage_awarded",
+          "internal_field_name": "over_and_above_percentage_awarded",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for over and above percentage awarded.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_has_over_and_above",
+          "internal_field_name": "has_over_and_above",
+          "group": "inferred",
+          "inferred_type": "int",
+          "description": "Derived or inferred value for has over and above.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_submission_date",
+          "internal_field_name": "submission_date",
+          "group": "parsed",
+          "inferred_type": "date",
+          "description": "Parsed or standardized value for submission date.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_need_pct",
+          "internal_field_name": "need_pct",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for need pct.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_need_comment",
+          "internal_field_name": "need_comment",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for need comment.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_merit_pct",
+          "internal_field_name": "merit_pct",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for merit pct.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_merit_hist_pct",
+          "internal_field_name": "merit_hist_pct",
+          "group": "parsed",
+          "inferred_type": "float",
+          "description": "Parsed or standardized value for merit hist pct.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_merit_comment",
+          "internal_field_name": "merit_comment",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for merit comment.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_consent_to_share_information",
+          "internal_field_name": "consent_to_share_information",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for consent to share information.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_bin_status",
+          "internal_field_name": "bin_status",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for bin status.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_faid_missing_documents",
+          "internal_field_name": "faid_missing_documents",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for faid missing documents.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_faid_missing_documents_count",
+          "internal_field_name": "faid_missing_documents_count",
+          "group": "parsed",
+          "inferred_type": "int",
+          "description": "Parsed or standardized value for faid missing documents count.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "raw_school",
+          "internal_field_name": "school_raw",
+          "group": "raw",
+          "inferred_type": "string",
+          "description": "Raw preserved source text or provenance for school.",
+          "derivation": "Copied from the source workbook without semantic transformation.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "parsed_school",
+          "internal_field_name": "school",
+          "group": "parsed",
+          "inferred_type": "string",
+          "description": "Parsed or standardized value for school.",
+          "derivation": "Produced by direct parsing or normalization of source workbook content.",
+          "model_safe_included": true,
+          "confidence_gate_field": "qa_school_confidence"
+        },
+        {
+          "export_field_name": "qa_school_was_missing",
+          "internal_field_name": "school_was_missing",
+          "group": "qa",
+          "inferred_type": "int",
+          "description": "QA signal or confidence metric for school was missing.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_school_filled_for_ops_only",
+          "internal_field_name": "school_filled_for_ops_only",
+          "group": "inferred",
+          "inferred_type": "null",
+          "description": "Derived or inferred value for school filled for ops only.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "inferred_school_ops_fill_method",
+          "internal_field_name": "school_ops_fill_method",
+          "group": "inferred",
+          "inferred_type": "null",
+          "description": "Derived or inferred value for school ops fill method.",
+          "derivation": "Derived from parsed values, heuristics, or policy logic.",
+          "model_safe_included": false,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_application_type_confidence",
+          "internal_field_name": "application_type_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for application type confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_school_confidence",
+          "internal_field_name": "school_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for school confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_father_income_document_confidence",
+          "internal_field_name": "father_income_document_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for father income document confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_mother_income_document_confidence",
+          "internal_field_name": "mother_income_document_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for mother income document confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_father_work_income_confidence",
+          "internal_field_name": "father_work_income_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for father work income confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_mother_work_income_confidence",
+          "internal_field_name": "mother_work_income_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for mother work income confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_applicant_income_confidence",
+          "internal_field_name": "applicant_income_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for applicant income confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_spouse_income_confidence",
+          "internal_field_name": "spouse_income_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for spouse income confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_financial_assistants_amount_confidence",
+          "internal_field_name": "financial_assistants_amount_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for financial assistants amount confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_loans_total_amount_confidence",
+          "internal_field_name": "loans_total_amount_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for loans total amount confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_loans_monthly_payment_confidence",
+          "internal_field_name": "loans_monthly_payment_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for loans monthly payment confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_loans_remaining_balance_confidence",
+          "internal_field_name": "loans_remaining_balance_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for loans remaining balance confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_properties_total_estimated_value_confidence",
+          "internal_field_name": "properties_total_estimated_value_confidence",
+          "group": "qa",
+          "inferred_type": "float",
+          "description": "QA signal or confidence metric for properties total estimated value confidence.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_issue_count",
+          "internal_field_name": "qa_issue_count",
+          "group": "qa",
+          "inferred_type": "int",
+          "description": "QA signal or confidence metric for qa issue count.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_requires_review",
+          "internal_field_name": "qa_requires_review",
+          "group": "qa",
+          "inferred_type": "int",
+          "description": "QA signal or confidence metric for qa requires review.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_max_severity",
+          "internal_field_name": "qa_max_severity",
+          "group": "qa",
+          "inferred_type": "string",
+          "description": "QA signal or confidence metric for qa max severity.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_quality_score",
+          "internal_field_name": "qa_quality_score",
+          "group": "qa",
+          "inferred_type": "int",
+          "description": "QA signal or confidence metric for qa quality score.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        },
+        {
+          "export_field_name": "qa_risk_categories",
+          "internal_field_name": "qa_risk_categories",
+          "group": "qa",
+          "inferred_type": "string",
+          "description": "QA signal or confidence metric for qa risk categories.",
+          "derivation": "Generated by validation, issue scoring, or field-level confidence logic.",
+          "model_safe_included": true,
+          "confidence_gate_field": null
+        }
+      ]
+    }
+  }
+}

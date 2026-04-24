@@ -1,0 +1,101 @@
+{
+  "generated_at_utc": "2026-04-23T19:05:24.713482+00:00",
+  "input_file": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/FAID - Committee Report - All data 20260304-090638.xlsx",
+  "source_sheet_name": "Export",
+  "source_row_count": 3130,
+  "source_column_count": 44,
+  "cleaned_row_count": 3130,
+  "cleaned_column_count": 172,
+  "dropped_source_columns": [
+    "AID Type",
+    "FAID_Record_owner",
+    "FAID_Term_rolled",
+    "Regular_FAID_Then_USAID_ADM"
+  ],
+  "dropped_all_null_output_columns": [],
+  "missing_school_rows": 662,
+  "prepare_school_fill_for_ops_only": false,
+  "rows_requiring_review": 960,
+  "review_output_row_count": 960,
+  "model_safe_row_count": 3130,
+  "model_safe_column_count": 121,
+  "qa_max_severity_counts": {
+    "none": 2170,
+    "low": 522,
+    "medium": 403,
+    "high": 35
+  },
+  "issue_risk_category_counts": {
+    "business_rule": 195,
+    "modeling": 1621,
+    "parsing": 45
+  },
+  "structured_output_row_counts": {
+    "financial_assistants": 478,
+    "loans": 505,
+    "properties": 7395,
+    "cars": 4729
+  },
+  "issue_count": 1861,
+  "issue_counts": {
+    "application_type_inferred_from_level": 695,
+    "application_type_level_mismatch": 2,
+    "decision_missing_with_bin_status": 172,
+    "large_monetary_value_review": 71,
+    "likely_lbp_without_currency_marker": 46,
+    "loan_balance_exceeds_total_amount": 13,
+    "loan_remaining_balance_non_monetary_text": 3,
+    "merit_plus_over_and_above_exceeds_50_rule": 8,
+    "mixed_currency_signal": 16,
+    "parent_income_needs_review": 13,
+    "parent_income_unparsed": 13,
+    "school_missing": 662,
+    "school_missing_undergraduate": 147
+  },
+  "top_levels": {
+    "Undergraduate": 2610,
+    "Graduate": 351,
+    "Professional": 168
+  },
+  "top_application_tracks": {
+    "early_merit": 1397,
+    "sophomore_regular": 958,
+    "graduate_regular": 527,
+    "professional_regular": 167,
+    "freshman_regular": 63,
+    "transfer": 10,
+    "special_program": 6,
+    "other": 2
+  },
+  "top_decisions": {
+    "awarded": 1860,
+    "denied": 1065,
+    "usaid": 26,
+    "awarded_affidavit_of_promise": 7
+  },
+  "top_bin_statuses": {
+    "awarded": 1680,
+    "denied": 1064,
+    "incomplete": 127,
+    "early_without_confirmation": 125,
+    "awarded_without_sending_letter": 77,
+    "committee_early_applications": 21,
+    "committee_regular": 13,
+    "awarded_donor_funded_scholarship": 8,
+    "awarded_affidavit_of_promise": 7,
+    "student_not_to_be_considered": 4
+  },
+  "output_files": {
+    "cleaned_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned.csv",
+    "model_safe_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_model_safe.csv",
+    "review_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_review_required.csv",
+    "financial_assistants_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_financial_assistants.csv",
+    "loans_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_loans.csv",
+    "properties_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_properties.csv",
+    "cars_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_cars.csv",
+    "issues_csv": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_issues.csv",
+    "data_dictionary_json": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_data_dictionary.json",
+    "profile_json": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_profile.json",
+    "summary_json": "/Users/jamilshoujah/Desktop/Yasmina-MSBA/cleaned data/faid_cleaned_summary.json"
+  }
+}

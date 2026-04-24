@@ -3,6 +3,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from utils.decision_labels import COMPARABLE_DECISION_LABELS, normalize_decision_series
+
 
 def _normalize_text(series: pd.Series) -> pd.Series:
     return series.astype("string").str.strip().str.lower()
@@ -30,7 +32,7 @@ def decision_distribution_insights(decision_counts: pd.DataFrame) -> list[str]:
     counts.index = counts.index.astype(str)
     normalized_index = counts.index.str.strip().str.lower()
 
-    awarded = int(counts[normalized_index == "awarded"].sum())
+    awarded = int(counts[normalized_index.isin(COMPARABLE_DECISION_LABELS - {"denied"})].sum())
     denied = int(counts[normalized_index == "denied"].sum())
     missing = int(counts[normalized_index == "missing"].sum())
     nonstandard = int(counts.sum() - awarded - denied - missing)
@@ -86,7 +88,7 @@ def numeric_decision_comparison_insights(
     if value_column not in dataframe.columns or decision_column not in dataframe.columns:
         return []
 
-    decision_clean = _normalize_text(dataframe[decision_column])
+    decision_clean = normalize_decision_series(dataframe[decision_column])
     values = pd.to_numeric(dataframe[value_column], errors="coerce")
     valid_mask = decision_clean.isin([positive_label, negative_label]) & values.notna()
 
@@ -191,7 +193,7 @@ def probability_distribution_insights(
         )
 
     if decision_column in dataframe.columns:
-        decision_clean = _normalize_text(dataframe[decision_column])
+        decision_clean = normalize_decision_series(dataframe[decision_column])
         valid_mask = decision_clean.isin(["awarded", "denied"]) & dataframe[probability_column].notna()
         if int(valid_mask.sum()) > 0:
             comparison = dataframe.loc[valid_mask, [probability_column]].copy()
